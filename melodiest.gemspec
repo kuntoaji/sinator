@@ -9,4 +9,6 @@ Gem::Specification.new do |s|
   s.files       = ["lib/melodiest.rb"]
   s.homepage    = 'http://github.com/kuntoaji/melodiest'
   s.license     = 'MIT'
+
+  s.requirements << 'sinatra, v1.4.5'
 end

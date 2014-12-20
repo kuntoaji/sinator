@@ -1,6 +1,8 @@
+require_relative 'lib/melodiest/version'
+
 Gem::Specification.new do |s|
   s.name        = 'melodiest'
-  s.version     = '0.0.0'
+  s.version     = Melodiest::VERSION
   s.date        = '2014-12-20'
   s.summary     = "Sinatra configuration boilerplate"
   s.description = "Sinatra configuration boilerpalte"

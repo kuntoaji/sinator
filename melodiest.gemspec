@@ -10,5 +10,6 @@ Gem::Specification.new do |s|
   s.homepage    = 'http://github.com/kuntoaji/melodiest'
   s.license     = 'MIT'
 
+  s.add_runtime_dependency 'sinatra', '1.4.5'
   s.requirements << 'sinatra, v1.4.5'
 end

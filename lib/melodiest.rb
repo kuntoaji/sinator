@@ -3,6 +3,7 @@ require 'sinatra'
 module Melodiest
   module Config
     def harmonize(&block)
+      set :server, 'thin'
       yield if block
     end
   end

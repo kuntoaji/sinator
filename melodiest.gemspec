@@ -12,7 +12,8 @@ Gem::Specification.new do |s|
   s.homepage    = 'http://github.com/kuntoaji/melodiest'
   s.license     = 'MIT'
 
-  s.add_development_dependency "bundler", "~> 1.7"
+  s.add_development_dependency 'bundler', '~> 1.7'
+  s.add_development_dependency 'rspec', '~> 3.1.0'
   s.add_runtime_dependency 'sinatra', '1.4.5'
   s.add_runtime_dependency 'thin', '1.6.3'
 end

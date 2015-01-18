@@ -2,17 +2,8 @@ require 'sinatra'
 
 module Melodiest
   module Config
-    def harmonize(&block)
+    def harmonize_settings
       set :server, 'thin'
-      yield if block
-    end
-  end
-
-  class Base < Sinatra::Base
-    extend Config
-
-    configure do
-      harmonize
     end
   end
 
@@ -20,7 +11,7 @@ module Melodiest
     extend Config
 
     configure do
-      harmonize
+      harmonize_settings
     end
   end
 end

@@ -1,17 +1,12 @@
 require 'sinatra'
+require 'melodiest/setting'
 
 module Melodiest
-  module Config
-    def harmonize_settings
-      set :server, 'thin'
-    end
-  end
-
   class Application < Sinatra::Application
-    extend Config
+    extend Setting
 
     configure do
-      harmonize_settings
+      setup
     end
   end
 end

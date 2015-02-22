@@ -1,12 +1,10 @@
 require 'sinatra'
+require 'sinatra/config_file'
 require 'melodiest/setting'
 
 module Melodiest
   class Application < Sinatra::Application
     extend Setting
-
-    configure do
-      setup
-    end
+    setup
   end
 end

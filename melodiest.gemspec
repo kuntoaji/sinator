@@ -16,5 +16,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rspec', '3.1.0'
   s.add_development_dependency 'rack-test', '0.6.3'
   s.add_runtime_dependency 'sinatra', '1.4.5'
+  s.add_runtime_dependency 'sinatra-contrib', '1.4.2'
   s.add_runtime_dependency 'thin', '1.6.3'
 end

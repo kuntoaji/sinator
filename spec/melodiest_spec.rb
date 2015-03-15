@@ -1,5 +1,3 @@
-require_relative '../lib/melodiest'
-
 describe Melodiest::Application do
   it "has config.yml" do
     expect(File.exists?(File.expand_path('../../lib/melodiest/config.yml', __FILE__))).to be_truthy

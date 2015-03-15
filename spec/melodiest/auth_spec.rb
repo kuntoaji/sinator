@@ -1,5 +1,3 @@
-require_relative '../../lib/melodiest/auth'
-
 describe Melodiest::Auth::Http do
   it "respond to authorized!" do
     expect(Melodiest::Auth::Http.method_defined?(:authorized!)).to be_truthy

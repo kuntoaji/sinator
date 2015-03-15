@@ -1,5 +1,7 @@
 ENV['RACK_ENV'] = 'test'
 require 'rack/test'
+require_relative '../lib/melodiest'
+require_relative '../lib/melodiest/auth'
 
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|

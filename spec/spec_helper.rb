@@ -89,3 +89,7 @@ def app
   Melodiest::Application
 end
 
+def gem_root_path
+  File.expand_path "../../", __FILE__
+end
+

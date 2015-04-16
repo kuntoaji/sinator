@@ -16,7 +16,17 @@ gem 'melodiest'
 ```
 
 ### How to Use
+#### Command
+generate app in current directory
+```
+melodiest my_app
+```
+generate app in target directory
+```
+melodiest my_app target/dir
+```
 
+#### Example Code
 Because Melodiest is already required Sinatra, you don't have to require 'sinatra' anymore, just require 'melodiest'.
 
 `Melodiest::Application` is subclass from `Sinatra::Application` and by default is using configuration from `Melodiest::Setting.setup` method.
@@ -26,7 +36,7 @@ Because Melodiest is already required Sinatra, you don't have to require 'sinatr
 # mysinatraapp.rb
 
 require 'melodiest'
-require 'melodiest/auth'
+require 'melodiest/auth/http'
 
 class App < Melodiest::Application
   helpers Melodiest::Auth::Http

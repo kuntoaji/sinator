@@ -48,7 +48,7 @@ describe Melodiest::Generator do
       expect(file_content).to include "require 'rubygems'"
       expect(file_content).to include "require 'bundler'"
       expect(file_content).to include "Bundler.require"
-      expect(file_content).to include "require './boot'"
+      expect(file_content).to include "require './my_app'"
       expect(file_content).to include "run MyApp"
     end
   end

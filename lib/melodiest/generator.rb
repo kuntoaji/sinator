@@ -1,4 +1,5 @@
 require 'fileutils'
+require 'melodiest/version'
 
 module Melodiest
 
@@ -28,7 +29,7 @@ module Melodiest
         f.write("require 'rubygems'\n")
         f.write("require 'bundler'\n\n")
         f.write("Bundler.require\n\n")
-        f.write("require './boot'\n")
+        f.write("require './#{@app_file_name}'\n")
         f.write("run #{@app_class_name}\n")
       end
     end

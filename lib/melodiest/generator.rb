@@ -3,9 +3,12 @@ require 'fileutils'
 module Melodiest
 
   class Generator
-    attr_accessor :destination
+    attr_accessor :destination, :app_file_name, :app_class_name
 
-    def initialize(destination=".")
+    def initialize(app_name, destination=".")
+      @app_file_name = app_name
+      @app_class_name = app_name.split("_").map{|s| s.capitalize }.join("")
+
       unless File.directory?(destination)
         FileUtils.mkdir_p(destination)
       end
@@ -27,6 +30,26 @@ module Melodiest
         f.write("Bundler.require\n\n")
         f.write("require './boot'\n")
         f.write("run #{app_name}\n")
+      end
+    end
+
+    # https://github.com/sinatra/sinatra-book/blob/master/book/Organizing_your_application.markdown
+    def generate_app
+      File.open "#{@destination}/#{@app_file_name}.rb", "w" do |f|
+        f.write("class #{app_class_name} < Melodiest::Application\n")
+        f.write("  configure do\n")
+        f.write("    # Load up database and such\n")
+        f.write("  end\n")
+        f.write("end\n\n")
+        f.write("# Load all route files\n")
+        f.write("Dir[File.dirname(__FILE___) + \"/app/routes/**\"].each do |route|\n")
+        f.write("  require route\n")
+        f.write("end\n")
+      end
+
+      app_dir = "#{@destination}/app"
+      ["", "/routes", "/models", "/views"].each do |dir|
+        FileUtils.mkdir "#{app_dir}/#{dir}"
       end
     end
   end

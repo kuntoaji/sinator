@@ -75,6 +75,7 @@ DOC
 
       expect(File.exists?(app_file)).to be_truthy
       expect(file_content).to eq expected_file_content
+      expect(Dir.exists?("#{dest}/db/migrations")).to be_truthy
       expect(Dir.exists?("#{dest}/app")).to be_truthy
       expect(Dir.exists?("#{dest}/app/routes")).to be_truthy
       expect(Dir.exists?("#{dest}/app/models")).to be_truthy

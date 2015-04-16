@@ -47,6 +47,8 @@ module Melodiest
         f.write("end\n")
       end
 
+      FileUtils.mkdir_p "#{@destination}/db/migrations"
+
       app_dir = "#{@destination}/app"
       ["", "/routes", "/models", "/views"].each do |dir|
         FileUtils.mkdir "#{app_dir}/#{dir}"

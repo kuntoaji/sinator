@@ -4,11 +4,12 @@ require 'melodiest/version'
 module Melodiest
 
   class Generator
-    attr_accessor :destination, :app_file_name, :app_class_name
+    attr_accessor :destination, :app_name, :app_class_name
 
-    def initialize(app_name, destination=".")
-      @app_file_name = app_name
+    def initialize(app_name, destination=nil)
+      @app_name = app_name
       @app_class_name = app_name.split("_").map{|s| s.capitalize }.join("")
+      destination ||= @app_name
 
       unless File.directory?(destination)
         FileUtils.mkdir_p(destination)
@@ -29,14 +30,14 @@ module Melodiest
         f.write("require 'rubygems'\n")
         f.write("require 'bundler'\n\n")
         f.write("Bundler.require\n\n")
-        f.write("require './#{@app_file_name}'\n")
+        f.write("require './#{@app_name}'\n")
         f.write("run #{@app_class_name}\n")
       end
     end
 
     # https://github.com/sinatra/sinatra-book/blob/master/book/Organizing_your_application.markdown
     def generate_app
-      File.open "#{@destination}/#{@app_file_name}.rb", "w" do |f|
+      File.open "#{@destination}/#{@app_name}.rb", "w" do |f|
         f.write("class #{app_class_name} < Melodiest::Application\n")
         f.write("  configure do\n")
         f.write("    # Load up database and such\n")

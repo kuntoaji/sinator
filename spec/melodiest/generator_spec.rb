@@ -8,16 +8,16 @@ describe Melodiest::Generator do
   let(:app) { "my_app" }
   let(:generator) { Melodiest::Generator.new app, dest }
 
-  it "sets app_file_name" do
-    expect(generator.app_file_name).to eq app
+  it "sets app_name" do
+    expect(generator.app_name).to eq app
   end
 
   it "sets app_class_name" do
     expect(generator.app_class_name).to eq "MyApp"
   end
 
-  it "has default destination path" do
-    expect(Melodiest::Generator.new("app").destination).to eq File.expand_path(".")
+  it "has default destination path app_name" do
+    expect(Melodiest::Generator.new(app).destination).to eq File.expand_path(app)
   end
 
   it "sets new destination path even if it's not exist yet" do

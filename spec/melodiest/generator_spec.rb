@@ -41,7 +41,7 @@ describe Melodiest::Generator do
     let(:bundle_config) { "#{dest}/config.ru" }
 
     it "should generate config.ru with correct content" do
-      generator.generate_bundle_config "MyApplication"
+      generator.generate_bundle_config
       file_content = File.read(bundle_config)
 
       expect(File.exists?(bundle_config)).to be_truthy
@@ -49,7 +49,7 @@ describe Melodiest::Generator do
       expect(file_content).to include "require 'bundler'"
       expect(file_content).to include "Bundler.require"
       expect(file_content).to include "require './boot'"
-      expect(file_content).to include "run MyApplication"
+      expect(file_content).to include "run MyApp"
     end
   end
 

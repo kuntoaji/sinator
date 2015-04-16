@@ -23,13 +23,13 @@ module Melodiest
       end
     end
 
-    def generate_bundle_config(app_name)
+    def generate_bundle_config
       File.open "#{@destination}/config.ru", "w" do |f|
         f.write("require 'rubygems'\n")
         f.write("require 'bundler'\n\n")
         f.write("Bundler.require\n\n")
         f.write("require './boot'\n")
-        f.write("run #{app_name}\n")
+        f.write("run #{@app_class_name}\n")
       end
     end
 

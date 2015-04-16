@@ -1,0 +1,24 @@
+#!/usr/bin/env ruby
+
+require 'melodiest/generator'
+
+if [1,2].include? ARGV.size
+  app_file_name = ARGV.first
+  target_dir = ARGV[1] ? ARGV[1] : "."
+  
+  generator = Melodiest::Generator.new app_file_name, target_dir
+  puts "generating gemfile"
+  generator.generate_gemfile
+
+  puts "generating bundle config"
+  generator.generate_bundle_config
+
+  puts "generating app dir"
+  generator.generate_app
+
+  puts "done"
+else
+  puts "\nexample usage:\n\n"
+  puts "generate application in current directory: 'melodiest my_application'\n"
+  puts "generate application in target directory: 'melodiest my_application target/dir'"
+end

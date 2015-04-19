@@ -9,6 +9,7 @@ Gem::Specification.new do |s|
   s.author      = 'Kunto Aji Kristianto'
   s.email       = 'kunto.aji.kr@slackware-id.org'
   s.files       = `git ls-files -z`.split("\x0")
+  s.executables << 'melodiest'
   s.homepage    = 'http://github.com/kuntoaji/melodiest'
   s.license     = 'MIT'
 

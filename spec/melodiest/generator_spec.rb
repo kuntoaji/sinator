@@ -21,11 +21,11 @@ describe Melodiest::Generator do
   end
 
   it "sets new destination path even if it's not exist yet" do
-    expect(generator.destination).to eq dest
+    expect("/tmp/melodiest/my_app").to eq "#{dest}/#{app}"
   end
 
   describe "#generate_gemfile" do
-    let(:gemfile) { "#{dest}/Gemfile" }
+    let(:gemfile) { "#{dest}/#{app}/Gemfile" }
 
     it "should generate Gemfile with correct content" do
       generator.generate_gemfile
@@ -38,7 +38,7 @@ describe Melodiest::Generator do
   end
 
   describe "#generate_bundle_config" do
-    let(:bundle_config) { "#{dest}/config.ru" }
+    let(:bundle_config) { "#{dest}/#{app}/config.ru" }
 
     it "should generate config.ru with correct content" do
       generator.generate_bundle_config
@@ -54,9 +54,11 @@ describe Melodiest::Generator do
   end
 
   describe "#generate_app" do
+    let(:target_dir) { "#{dest}/#{app}" }
+
     it "generates <app_name>.rb" do
       generator.generate_app
-      app_file = "#{dest}/{my_app}.rb"
+      app_file = "#{target_dir}/my_app.rb"
       file_content = File.read(app_file)
 
       expected_file_content =
@@ -75,11 +77,11 @@ DOC
 
       expect(File.exists?(app_file)).to be_truthy
       expect(file_content).to eq expected_file_content
-      expect(Dir.exists?("#{dest}/db/migrations")).to be_truthy
-      expect(Dir.exists?("#{dest}/app")).to be_truthy
-      expect(Dir.exists?("#{dest}/app/routes")).to be_truthy
-      expect(Dir.exists?("#{dest}/app/models")).to be_truthy
-      expect(Dir.exists?("#{dest}/app/views")).to be_truthy
+      expect(Dir.exists?("#{target_dir}/db/migrations")).to be_truthy
+      expect(Dir.exists?("#{target_dir}/app")).to be_truthy
+      expect(Dir.exists?("#{target_dir}/app/routes")).to be_truthy
+      expect(Dir.exists?("#{target_dir}/app/models")).to be_truthy
+      expect(Dir.exists?("#{target_dir}/app/views")).to be_truthy
     end
   end
 

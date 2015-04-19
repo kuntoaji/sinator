@@ -37,7 +37,7 @@ module Melodiest
     end
 
     def self.run(app_name, target_dir)
-      generator = Melodiest::Generator.new app_name
+      generator = Melodiest::Generator.new app_name, target_dir
 
       generator.generate_gemfile
       generator.generate_bundle_config

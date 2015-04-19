@@ -9,7 +9,7 @@ module Melodiest
     def initialize(app_name, destination=nil)
       @app_name = app_name
       @app_class_name = app_name.split("_").map{|s| s.capitalize }.join("")
-      destination ||= @app_name
+      destination = destination ? "#{destination}/#{@app_name}" : @app_name
 
       unless File.directory?(destination)
         FileUtils.mkdir_p(destination)

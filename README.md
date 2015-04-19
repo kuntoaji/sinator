@@ -19,11 +19,11 @@ gem 'melodiest'
 #### Command
 generate app in current directory
 ```
-melodiest my_app
+melodiest -n my_app
 ```
 generate app in target directory
 ```
-melodiest my_app target/dir
+melodiest -n my_app -d target/dir
 ```
 
 #### Example Code
@@ -33,33 +33,41 @@ Because Melodiest is already required Sinatra, you don't have to require 'sinatr
 
 
 ```ruby
-# mysinatraapp.rb
+# my_app.rb
 
-require 'melodiest'
 require 'melodiest/auth/http'
 
-class App < Melodiest::Application
+class App < Melodiest::Application'
+  configure do
+    # Load up database and such
+  end
+  
   helpers Melodiest::Auth::Http
+end
 
-  get "/" do
-    "hello world!"
-  end
+# app/routes/my_routes.rb
 
-  get "/protected" do
-    authorized! "myhttpauthusername", "myhttpauthpassword"
-  end
+get "/" do
+  "hello world!"
+end
 
+get "/protected" do
+  authorized! "myhttpauthusername", "myhttpauthpassword"
+  "welcome!"
 end
 
 ```
+#### Run the server
+```
+bundle exec rackup
+```
 
-#### Configuration
 
-Configuration
+### Configuration
 
-  * `set :server, 'thin'`
+See [melodiest/config.yml](https://github.com/kuntoaji/melodiest/blob/master/lib/melodiest/config.yml)
 
-#### Helpers
+### Helpers
 
 Helper methods
 

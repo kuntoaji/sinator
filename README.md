@@ -37,7 +37,7 @@ Because Melodiest is already required Sinatra, you don't have to require 'sinatr
 
 require 'melodiest/auth/http'
 
-class App < Melodiest::Application'
+class App < Melodiest::Application
   configure do
     # Load up database and such
   end

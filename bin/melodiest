@@ -1,1 +1,5 @@
 #!/usr/bin/env ruby
+
+require_relative '../lib/melodiest/command'
+
+puts Melodiest::Command.parse ARGV

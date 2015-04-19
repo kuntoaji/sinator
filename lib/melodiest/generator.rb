@@ -1,5 +1,5 @@
 require 'fileutils'
-require 'melodiest/version'
+require_relative 'version'
 
 module Melodiest
 

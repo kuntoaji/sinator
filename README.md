@@ -1,6 +1,6 @@
 # Melodiest
 
-Melodiest is [Sinatra](http://www.sinatrarb.com/) configuration boilerplate. The purpose of this gem is because I'm too lazy to write configuration every my Sinatra project.
+Melodiest is [Sinatra](http://www.sinatrarb.com/) application boilerplate. It provides generator and useful modules for developing application.
 
 ### Installation
 
@@ -63,12 +63,13 @@ bundle exec rackup
 ```
 
 
-### Configuration
+### Default Configuration
 
-See [melodiest/config.yml](https://github.com/kuntoaji/melodiest/blob/master/lib/melodiest/config.yml)
+  * `Sinatra::Reloader` in development environment only
+  * See [melodiest/config.yml](https://github.com/kuntoaji/melodiest/blob/master/lib/melodiest/config.yml)
 
-### Helpers
+### Modules
 
-Helper methods
+Available modules from Melodiest
 
   * `Melodiest::Auth::Http`

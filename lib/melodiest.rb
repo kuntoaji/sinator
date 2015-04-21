@@ -5,7 +5,7 @@ require 'melodiest/setting'
 
 module Melodiest
   class Application < Sinatra::Application
-    extend Setting
+    register Melodiest::Setting
     setup
 
     # http://www.sinatrarb.com/contrib/reloader.html

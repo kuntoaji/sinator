@@ -45,9 +45,10 @@ describe Melodiest::Generator do
       file_content = File.read(bundle_config)
 
       expect(File.exists?(bundle_config)).to be_truthy
+      expect(file_content).to include "ENV['RACK_ENV'] ||= 'development'"
       expect(file_content).to include "require 'rubygems'"
       expect(file_content).to include "require 'bundler'"
-      expect(file_content).to include "Bundler.require"
+      expect(file_content).to include "Bundler.require :default, ENV['RACK_ENV'].to_sym"
       expect(file_content).to include "require './my_app'"
       expect(file_content).to include "run MyApp"
     end

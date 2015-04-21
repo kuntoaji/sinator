@@ -27,9 +27,10 @@ module Melodiest
 
     def generate_bundle_config
       File.open "#{@destination}/config.ru", "w" do |f|
+        f.write("ENV['RACK_ENV'] ||= 'development'\n\n")
         f.write("require 'rubygems'\n")
         f.write("require 'bundler'\n\n")
-        f.write("Bundler.require\n\n")
+        f.write("Bundler.require :default, ENV['RACK_ENV'].to_sym\n\n")
         f.write("require './#{@app_name}'\n")
         f.write("run #{@app_class_name}\n")
       end

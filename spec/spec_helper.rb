@@ -78,8 +78,12 @@ RSpec.configure do |config|
   end
 end
 
+class SpecApp < Melodiest::Application
+  setup
+end
+
 def app
-  Melodiest::Application
+  SpecApp
 end
 
 def gem_root_path

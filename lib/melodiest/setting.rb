@@ -1,8 +1,13 @@
 module Melodiest
   module Setting
-    def setup
-      register Sinatra::ConfigFile
-      config_file File.expand_path('../config.yml', __FILE__)
+    def setup(options={})
+      settings = {
+        server: 'thin'
+      }.merge(options)
+
+      settings.each do |key, value|
+        set key, value
+      end
     end
   end
 end

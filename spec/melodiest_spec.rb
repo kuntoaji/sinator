@@ -1,11 +1,21 @@
 describe Melodiest::Application do
-  it "has config.yml" do
-    expect(File.exists?(File.expand_path('../../lib/melodiest/config.yml', __FILE__))).to be_truthy
-  end
-
   context ".settings" do
     it "use thin as server" do
-      expect(Melodiest::Application.settings.server).to eq("thin")
+      expect(app.settings.server).to eq("thin")
+    end
+
+    describe ".setup" do
+      let(:my_app) do
+        class MyApp < Melodiest::Application
+          setup server: 'puma'
+        end
+
+        MyApp
+      end
+
+      it "overrides default setting" do
+        expect(my_app.settings.server).to eq("puma")
+      end
     end
   end
 

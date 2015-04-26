@@ -1,7 +1,6 @@
 ENV['RACK_ENV'] = 'test'
 require 'rack/test'
 require_relative '../lib/melodiest'
-require_relative '../lib/melodiest/auth/http'
 
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|
@@ -80,12 +79,6 @@ RSpec.configure do |config|
 end
 
 def app
-  Melodiest::Application.helpers Melodiest::Auth::Http
-
-  Melodiest::Application.get "/protected" do
-    authorized!
-  end
-
   Melodiest::Application
 end
 

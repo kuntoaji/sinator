@@ -35,25 +35,16 @@ Because Melodiest is already required Sinatra, you don't have to require 'sinatr
 ```ruby
 # my_app.rb
 
-require 'melodiest/auth/http'
-
 class App < Melodiest::Application
   configure do
     # Load up database and such
   end
-  
-  helpers Melodiest::Auth::Http
 end
 
 # app/routes/my_routes.rb
 
 get "/" do
   "hello world!"
-end
-
-get "/protected" do
-  authorized! "myhttpauthusername", "myhttpauthpassword"
-  "welcome!"
 end
 
 ```
@@ -67,9 +58,3 @@ bundle exec rackup
 
   * `Sinatra::Reloader` in development environment only
   * See [melodiest/config.yml](https://github.com/kuntoaji/melodiest/blob/master/lib/melodiest/config.yml)
-
-### Modules
-
-Available modules from Melodiest
-
-  * `Melodiest::Auth::Http`

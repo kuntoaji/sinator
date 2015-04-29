@@ -65,6 +65,11 @@ describe Melodiest::Generator do
       expected_file_content =
 <<DOC
 class MyApp < Melodiest::Application
+  setup
+
+  set :app_file, __FILE__
+  set :views, Proc.new { File.join(root, "app/views") }
+
   configure do
     # Load up database and such
   end

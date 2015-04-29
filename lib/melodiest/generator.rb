@@ -40,6 +40,9 @@ module Melodiest
     def generate_app
       File.open "#{@destination}/#{@app_name}.rb", "w" do |f|
         f.write("class #{app_class_name} < Melodiest::Application\n")
+        f.write("  setup\n\n")
+        f.write("  set :app_file, __FILE__\n")
+        f.write("  set :views, Proc.new { File.join(root, \"app/views\") }\n\n")
         f.write("  configure do\n")
         f.write("    # Load up database and such\n")
         f.write("  end\n")

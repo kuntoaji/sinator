@@ -13,6 +13,7 @@ Gem::Specification.new do |s|
   s.homepage    = 'http://github.com/kuntoaji/melodiest'
   s.license     = 'MIT'
 
+  s.required_ruby_version = '>= 2.1'
   s.add_development_dependency 'bundler', '~> 1.7'
   s.add_development_dependency 'rspec', '3.1.0'
   s.add_development_dependency 'rack-test', '0.6.3'

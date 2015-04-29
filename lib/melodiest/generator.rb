@@ -48,7 +48,7 @@ module Melodiest
         f.write("  end\n")
         f.write("end\n\n")
         f.write("# Load all route files\n")
-        f.write("Dir[File.dirname(__FILE__) + \"/app/routes/**\"].each do |route|\n")
+        f.write("Dir[File.dirname(__FILE__) + \"/app/routes/**/*.rb\"].each do |route|\n")
         f.write("  require route\n")
         f.write("end\n")
       end

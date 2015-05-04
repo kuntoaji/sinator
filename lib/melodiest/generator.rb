@@ -21,7 +21,8 @@ module Melodiest
     def generate_gemfile
       File.open "#{@destination}/Gemfile", "w" do |f|
         f.write("source 'https://rubygems.org'\n\n")
-        f.write("gem 'melodiest', '#{Melodiest::VERSION}'")
+        f.write("gem 'melodiest', '#{Melodiest::VERSION}'\n")
+        f.write("gem 'thin'")
       end
     end
 

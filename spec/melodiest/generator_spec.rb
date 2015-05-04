@@ -34,6 +34,7 @@ describe Melodiest::Generator do
       expect(File.exists?(gemfile)).to be_truthy
       expect(file_content).to include "source 'https://rubygems.org'"
       expect(file_content).to include "gem 'melodiest', '#{Melodiest::VERSION}'"
+      expect(file_content).to include "gem 'thin'"
     end
   end
 

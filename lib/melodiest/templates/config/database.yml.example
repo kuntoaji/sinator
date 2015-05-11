@@ -1,0 +1,7 @@
+# http://sequel.jeremyevans.net/rdoc/files/doc/opening_databases_rdoc.html
+# 
+# development:
+#   adapter: mysql2
+#   database: exampledb_development
+#   user: exampleuser
+#   password: examplepassword

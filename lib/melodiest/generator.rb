@@ -61,6 +61,10 @@ module Melodiest
         FileUtils.mkdir "#{app_dir}/#{dir}"
       end
     end
+
+    def copy_templates
+      FileUtils.cp_r File.expand_path("../templates/config", __FILE__), @destination
+    end
   end
 
 end

@@ -1,15 +1,20 @@
 require_relative '../../lib/melodiest/generator'
-require 'fakefs/spec_helpers'
 
 describe Melodiest::Generator do
-  include FakeFS::SpecHelpers
+  let(:generator) { Melodiest::Generator.new @app, @dest }
+  let(:target_dir) { "#{@dest}/#{@app}" }
 
-  let(:dest) { "/tmp/melodiest" }
-  let(:app) { "my_app" }
-  let(:generator) { Melodiest::Generator.new app, dest }
+  before :all do
+    @dest = "/tmp/melodiest"
+    @app = "my_app"
+  end
+
+  after :all do
+    FileUtils.rm_r @dest
+  end
 
   it "sets app_name" do
-    expect(generator.app_name).to eq app
+    expect(generator.app_name).to eq @app
   end
 
   it "sets app_class_name" do
@@ -17,15 +22,15 @@ describe Melodiest::Generator do
   end
 
   it "has default destination path app_name" do
-    expect(Melodiest::Generator.new(app).destination).to eq File.expand_path(app)
+    expect(Melodiest::Generator.new(@app).destination).to eq File.expand_path(@app)
   end
 
   it "sets new destination path even if it's not exist yet" do
-    expect("/tmp/melodiest/my_app").to eq "#{dest}/#{app}"
+    expect("/tmp/melodiest/my_app").to eq target_dir
   end
 
   describe "#generate_gemfile" do
-    let(:gemfile) { "#{dest}/#{app}/Gemfile" }
+    let(:gemfile) { "#{target_dir}/Gemfile" }
 
     it "should generate Gemfile with correct content" do
       generator.generate_gemfile
@@ -39,7 +44,7 @@ describe Melodiest::Generator do
   end
 
   describe "#generate_bundle_config" do
-    let(:bundle_config) { "#{dest}/#{app}/config.ru" }
+    let(:bundle_config) { "#{target_dir}/config.ru" }
 
     it "should generate config.ru with correct content" do
       generator.generate_bundle_config
@@ -56,7 +61,6 @@ describe Melodiest::Generator do
   end
 
   describe "#generate_app" do
-    let(:target_dir) { "#{dest}/#{app}" }
 
     it "generates <app_name>.rb" do
       generator.generate_app
@@ -89,6 +93,19 @@ DOC
       expect(Dir.exists?("#{target_dir}/app/routes")).to be_truthy
       expect(Dir.exists?("#{target_dir}/app/models")).to be_truthy
       expect(Dir.exists?("#{target_dir}/app/views")).to be_truthy
+    end
+  end
+
+  describe "#copy_templates" do
+    let(:config_dir) { "#{target_dir}/config" }
+
+    it "copies config dir" do
+      expect(File.exists?(config_dir)).to be_falsey
+      expect(File.exists?("#{config_dir}/database.yml.example")).to be_falsey
+      generator.copy_templates
+
+      expect(File.exists?(config_dir)).to be_truthy
+      expect(File.exists?("#{config_dir}/database.yml.example")).to be_truthy
     end
   end
 

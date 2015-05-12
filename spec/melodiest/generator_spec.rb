@@ -63,6 +63,7 @@ describe Melodiest::Generator do
   describe "#generate_app" do
 
     it "generates <app_name>.rb" do
+      FileUtils.rm_r @dest if Dir.exists?(@dest)
       generator.generate_app
       app_file = "#{target_dir}/my_app.rb"
       file_content = File.read(app_file)
@@ -93,6 +94,38 @@ DOC
       expect(Dir.exists?("#{target_dir}/app/routes")).to be_truthy
       expect(Dir.exists?("#{target_dir}/app/models")).to be_truthy
       expect(Dir.exists?("#{target_dir}/app/views")).to be_truthy
+    end
+
+    context "with sequel" do
+      it "has sequel database connector" do
+        FileUtils.rm_r @dest if Dir.exists?(@dest)
+        generator.generate_app true
+        app_file = "#{target_dir}/my_app.rb"
+        file_content = File.read(app_file)
+
+        expected_file_content =
+<<DOC
+require 'yaml'
+
+class MyApp < Melodiest::Application
+  setup
+
+  set :app_file, __FILE__
+  set :views, Proc.new { File.join(root, "app/views") }
+
+  configure do
+    Sequel.connect YAML.load_file(File.expand_path("../config/database.yml", __FILE__))[settings.environment.to_s]
+  end
+end
+
+# Load all route files
+Dir[File.dirname(__FILE__) + "/app/routes/**/*.rb"].each do |route|
+  require route
+end
+DOC
+
+        expect(file_content).to eq expected_file_content
+      end
     end
   end
 

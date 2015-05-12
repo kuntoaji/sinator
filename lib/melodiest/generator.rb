@@ -38,14 +38,25 @@ module Melodiest
     end
 
     # https://github.com/sinatra/sinatra-book/blob/master/book/Organizing_your_application.markdown
-    def generate_app
+    def generate_app(with_database=false)
+      content = {}
+
+      if with_database
+        content[:yaml] = "require 'yaml'\n\n"
+        content[:connector] = "    Sequel.connect YAML.load_file(File.expand_path(\"../config/database.yml\", __FILE__))[settings.environment.to_s]\n"
+      else
+        content[:yaml] = nil
+        content[:connector] = "    # Load up database and such\n"
+      end
+
       File.open "#{@destination}/#{@app_name}.rb", "w" do |f|
+        f.write(content[:yaml])
         f.write("class #{app_class_name} < Melodiest::Application\n")
         f.write("  setup\n\n")
         f.write("  set :app_file, __FILE__\n")
         f.write("  set :views, Proc.new { File.join(root, \"app/views\") }\n\n")
         f.write("  configure do\n")
-        f.write("    # Load up database and such\n")
+        f.write(content[:connector])
         f.write("  end\n")
         f.write("end\n\n")
         f.write("# Load all route files\n")

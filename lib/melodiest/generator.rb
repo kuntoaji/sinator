@@ -82,6 +82,7 @@ module Melodiest
 
     def copy_templates
       FileUtils.cp_r File.expand_path("../templates/config", __FILE__), @destination
+      FileUtils.cp File.expand_path("../templates/Rakefile", __FILE__), @destination if @with_database
     end
   end
 

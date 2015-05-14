@@ -154,15 +154,31 @@ DOC
   end
 
   describe "#copy_templates" do
-    let(:config_dir) { "#{target_dir}/config" }
+    context "when generating without database" do
+      let(:config_dir) { "#{target_dir}/config" }
+      let(:without_db_rakefile) { "#{target_dir}/Rakefile" }
 
-    it "copies config dir" do
-      expect(File.exists?(config_dir)).to be_falsey
-      expect(File.exists?("#{config_dir}/database.yml.example")).to be_falsey
-      generator.copy_templates
+      it "copies config dir" do
+        expect(File.exists?(config_dir)).to be_falsey
+        expect(File.exists?("#{config_dir}/database.yml.example")).to be_falsey
+        expect(File.exists?(without_db_rakefile)).to be_falsey
+        generator.copy_templates
 
-      expect(File.exists?(config_dir)).to be_truthy
-      expect(File.exists?("#{config_dir}/database.yml.example")).to be_truthy
+        expect(File.exists?(config_dir)).to be_truthy
+        expect(File.exists?("#{config_dir}/database.yml.example")).to be_truthy
+        expect(File.exists?(without_db_rakefile)).to be_falsey
+      end
+    end
+
+    context "when generating with database" do
+      let(:with_db_rakefile) { "#{target_dir_with_db}/Rakefile" }
+
+      it "copies Rakefile" do
+        expect(File.exists?(with_db_rakefile)).to be_falsey
+        generator_with_db.copy_templates
+
+        expect(File.exists?(with_db_rakefile)).to be_truthy
+      end
     end
   end
 

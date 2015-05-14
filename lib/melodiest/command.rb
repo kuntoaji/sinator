@@ -31,20 +31,20 @@ module Melodiest
 
       option_parser.parse! options
 
-      result = Command.run(args[:name], args[:target]) unless args[:name].nil?
+      result = run(args) unless args[:name].nil?
 
       result
     end
 
-    def self.run(app_name, target_dir)
-      generator = Melodiest::Generator.new app_name, destination: target_dir
+    def self.run(args)
+      generator = Melodiest::Generator.new args[:name], destination: args[:target]
 
       generator.generate_gemfile
       generator.generate_bundle_config
       generator.generate_app
 
-      msg = "#{app_name} is successfully generated"
-      msg << " in #{target_dir}" if target_dir
+      msg = "#{args[:name]} is successfully generated"
+      msg << " in #{args[:target]}" if args[:target]
 
       msg 
     end

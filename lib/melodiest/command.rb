@@ -23,15 +23,15 @@ module Melodiest
           args[:name] = name
         end
 
-        opts.on("-dDIR", "--dir=DIR", "instead of current directory, generate app in target DIR") do |dir|
-          args[:dir] = dir
+        opts.on("-tDIR", "--target=DIR", "instead of current directory, generate app in target DIR") do |target|
+          args[:target] = target
         end
 
       end
 
       option_parser.parse! options
 
-      result = Command.run(args[:name], args[:dir]) unless args[:name].nil?
+      result = Command.run(args[:name], args[:target]) unless args[:name].nil?
 
       result
     end

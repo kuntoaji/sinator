@@ -24,16 +24,16 @@ describe Melodiest::Command do
       expect(app).to include "my_app is successfully generated"
     end
 
-    it "has --directory option as target directory" do
-      app = Melodiest::Command.parse %w(-n my_app --dir /tmp)
+    it "has --target option as target directory" do
+      app = Melodiest::Command.parse %w(-n my_app --target /tmp)
 
       expect(app).to include "my_app is successfully generated in /tmp"
       expect(Dir.exists?("/tmp/my_app")).to be_truthy
     end
 
-    context "when has no --name option and only --dir option" do
+    context "when has no --name option and only --target option" do
       it "does nothing" do
-        app = Melodiest::Command.parse %w(--dir /tmp/melodiest)
+        app = Melodiest::Command.parse %w(--target /tmp/melodiest)
 
         expect(app).to be_empty
       end

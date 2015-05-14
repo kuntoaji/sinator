@@ -72,8 +72,6 @@ module Melodiest
         f.write("end\n")
       end
 
-      FileUtils.mkdir_p "#{@destination}/db/migrations"
-
       app_dir = "#{@destination}/app"
       ["", "/routes", "/models", "/views"].each do |dir|
         FileUtils.mkdir "#{app_dir}/#{dir}"
@@ -82,7 +80,11 @@ module Melodiest
 
     def copy_templates
       FileUtils.cp_r File.expand_path("../templates/config", __FILE__), @destination
-      FileUtils.cp File.expand_path("../templates/Rakefile", __FILE__), @destination if @with_database
+
+      if @with_database
+        FileUtils.cp File.expand_path("../templates/Rakefile", __FILE__), @destination
+        FileUtils.cp_r File.expand_path("../templates/db", __FILE__), @destination
+      end
     end
   end
 

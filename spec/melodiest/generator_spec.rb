@@ -105,9 +105,10 @@ class MyApp < Melodiest::Application
   end
 end
 
-# Load all route files
-Dir[File.dirname(__FILE__) + "/app/routes/**/*.rb"].each do |route|
-  require route
+%w{app/models app/routes}.each do |dir|
+  Dir[File.join(dir, '**/*.rb')].each do |file|
+    require file
+  end
 end
 DOC
 
@@ -141,9 +142,10 @@ class MyApp < Melodiest::Application
   end
 end
 
-# Load all route files
-Dir[File.dirname(__FILE__) + "/app/routes/**/*.rb"].each do |route|
-  require route
+%w{app/models app/routes}.each do |dir|
+  Dir[File.join(dir, '**/*.rb')].each do |file|
+    require file
+  end
 end
 DOC
 

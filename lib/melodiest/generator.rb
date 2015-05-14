@@ -66,9 +66,10 @@ module Melodiest
         f.write(content[:database])
         f.write("  end\n")
         f.write("end\n\n")
-        f.write("# Load all route files\n")
-        f.write("Dir[File.dirname(__FILE__) + \"/app/routes/**/*.rb\"].each do |route|\n")
-        f.write("  require route\n")
+        f.write("%w{app/models app/routes}.each do |dir|\n")
+        f.write("  Dir[File.join(dir, '**/*.rb')].each do |file|\n")
+        f.write("    require file\n")
+        f.write("  end\n")
         f.write("end\n")
       end
 

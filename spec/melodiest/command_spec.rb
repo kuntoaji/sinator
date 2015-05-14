@@ -1,10 +1,18 @@
 require_relative '../../lib/melodiest/command'
-require 'fakefs/spec_helpers'
 
 describe Melodiest::Command do
-  include FakeFS::SpecHelpers
 
   describe "parse" do
+    before do
+      FileUtils.rm_r "my_app" if Dir.exists?("my_app")
+      FileUtils.rm_r "/tmp/my_app" if Dir.exists?("/tmp/my_app")
+    end
+
+    after :all do
+      FileUtils.rm_r "my_app" if Dir.exists?("my_app")
+      FileUtils.rm_r "/tmp/my_app" if Dir.exists?("/tmp/my_app")
+    end
+
     it "has --help option" do
       help = Melodiest::Command.parse %w(--help)
 
@@ -31,6 +39,14 @@ describe Melodiest::Command do
       expect(Dir.exists?("/tmp/my_app")).to be_truthy
     end
 
+    it "has --database option" do
+      app = Melodiest::Command.parse %w(-n my_app --target /tmp -d)
+
+      puts `ls /tmp/my_app`
+      expect(app).to include "my_app is successfully generated in /tmp"
+      expect(Dir.exists?("/tmp/my_app/db")).to be_truthy
+    end
+
     context "when has no --name option and only --target option" do
       it "does nothing" do
         app = Melodiest::Command.parse %w(--target /tmp/melodiest)
@@ -39,4 +55,5 @@ describe Melodiest::Command do
       end
     end
   end
+
 end

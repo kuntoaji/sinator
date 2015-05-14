@@ -5,7 +5,7 @@ module Melodiest
 
   class Command
     def self.parse(options)
-      args = {name: nil, dir: nil}
+      args = {}
       result = ""
 
       option_parser = OptionParser.new do |opts|
@@ -27,6 +27,10 @@ module Melodiest
           args[:target] = target
         end
 
+        opts.on("-d", "--database", "add sequel orm for postgres sql") do
+          args[:database] = true
+        end
+
       end
 
       option_parser.parse! options
@@ -37,11 +41,13 @@ module Melodiest
     end
 
     def self.run(args)
-      generator = Melodiest::Generator.new args[:name], destination: args[:target]
+      generator = Melodiest::Generator.new args[:name],
+        destination: args[:target], with_database: args[:database]
 
       generator.generate_gemfile
       generator.generate_bundle_config
       generator.generate_app
+      generator.copy_templates
 
       msg = "#{args[:name]} is successfully generated"
       msg << " in #{args[:target]}" if args[:target]

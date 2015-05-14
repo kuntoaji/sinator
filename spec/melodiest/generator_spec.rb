@@ -1,7 +1,7 @@
 require_relative '../../lib/melodiest/generator'
 
 describe Melodiest::Generator do
-  let(:generator) { Melodiest::Generator.new @app, @dest }
+  let(:generator) { Melodiest::Generator.new @app, destination: @dest }
   let(:target_dir) { "#{@dest}/#{@app}" }
 
   before :all do
@@ -99,7 +99,8 @@ DOC
     context "with sequel" do
       it "has sequel database connector" do
         FileUtils.rm_r @dest if Dir.exists?(@dest)
-        generator.generate_app true
+        generator_with_db = Melodiest::Generator.new @app, destination: @dest, with_database: true
+        generator_with_db.generate_app
         app_file = "#{target_dir}/my_app.rb"
         file_content = File.read(app_file)
 

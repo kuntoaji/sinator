@@ -6,10 +6,12 @@ module Melodiest
   class Generator
     attr_accessor :destination, :app_name, :app_class_name
 
-    def initialize(app_name, destination=nil)
+    def initialize(app_name, options={})
       @app_name = app_name
       @app_class_name = app_name.split("_").map{|s| s.capitalize }.join("")
-      destination = destination ? "#{destination}/#{@app_name}" : @app_name
+
+      destination = options[:destination] ? "#{options[:destination]}/#{@app_name}" : @app_name
+      @with_database = options[:with_database]
 
       unless File.directory?(destination)
         FileUtils.mkdir_p(destination)
@@ -38,15 +40,15 @@ module Melodiest
     end
 
     # https://github.com/sinatra/sinatra-book/blob/master/book/Organizing_your_application.markdown
-    def generate_app(with_database=false)
+    def generate_app
       content = {}
 
-      if with_database
+      if @with_database
         content[:yaml] = "require 'yaml'\n\n"
-        content[:connector] = "    Sequel.connect YAML.load_file(File.expand_path(\"../config/database.yml\", __FILE__))[settings.environment.to_s]\n"
+        content[:database] = "    Sequel.connect YAML.load_file(File.expand_path(\"../config/database.yml\", __FILE__))[settings.environment.to_s]\n"
       else
         content[:yaml] = nil
-        content[:connector] = "    # Load up database and such\n"
+        content[:database] = "    # Load up database and such\n"
       end
 
       File.open "#{@destination}/#{@app_name}.rb", "w" do |f|
@@ -56,7 +58,7 @@ module Melodiest
         f.write("  set :app_file, __FILE__\n")
         f.write("  set :views, Proc.new { File.join(root, \"app/views\") }\n\n")
         f.write("  configure do\n")
-        f.write(content[:connector])
+        f.write(content[:database])
         f.write("  end\n")
         f.write("end\n\n")
         f.write("# Load all route files\n")

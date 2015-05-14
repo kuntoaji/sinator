@@ -25,6 +25,11 @@ module Melodiest
         f.write("source 'https://rubygems.org'\n\n")
         f.write("gem 'melodiest', '#{Melodiest::VERSION}'\n")
         f.write("gem 'thin'")
+
+        if @with_database
+          f.write("\ngem 'sequel'\n")
+          f.write("gem 'sequel_pg', require: 'sequel'")
+        end
       end
     end
 

@@ -2,15 +2,24 @@ require_relative '../../lib/melodiest/generator'
 
 describe Melodiest::Generator do
   let(:generator) { Melodiest::Generator.new @app, destination: @dest }
+  let(:generator_with_db) { Melodiest::Generator.new @app, destination: @dest_with_db, with_database: true }
   let(:target_dir) { "#{@dest}/#{@app}" }
+  let(:target_dir_with_db) { "#{@dest_with_db}/#{@app}" }
 
   before :all do
     @dest = "/tmp/melodiest"
+    @dest_with_db = "#{@dest}_with_db"
     @app = "my_app"
+  end
+
+  before :all do
+    FileUtils.rm_r @dest if Dir.exists?(@dest)
+    FileUtils.rm_r @dest_with_db if Dir.exists?(@dest_with_db)
   end
 
   after :all do
     FileUtils.rm_r @dest
+    FileUtils.rm_r @dest_with_db
   end
 
   it "sets app_name" do
@@ -30,16 +39,31 @@ describe Melodiest::Generator do
   end
 
   describe "#generate_gemfile" do
-    let(:gemfile) { "#{target_dir}/Gemfile" }
+    context "without database" do
+      let(:gemfile) { "#{target_dir}/Gemfile" }
 
-    it "should generate Gemfile with correct content" do
-      generator.generate_gemfile
-      file_content = File.read(gemfile)
+      it "should generate Gemfile without sequel" do
+        generator.generate_gemfile
+        file_content = File.read(gemfile)
 
-      expect(File.exists?(gemfile)).to be_truthy
-      expect(file_content).to include "source 'https://rubygems.org'"
-      expect(file_content).to include "gem 'melodiest', '#{Melodiest::VERSION}'"
-      expect(file_content).to include "gem 'thin'"
+        expect(File.exists?(gemfile)).to be_truthy
+        expect(file_content).to include "source 'https://rubygems.org'"
+        expect(file_content).to include "gem 'melodiest', '#{Melodiest::VERSION}'"
+        expect(file_content).to include "gem 'thin'"
+        expect(file_content).to_not include "gem 'sequel'"
+        expect(file_content).to_not include "gem 'sequel_pg'"
+      end
+    end
+
+    context "with database" do
+      let(:gemfile) { "#{target_dir_with_db}/Gemfile" }
+
+      it "should generate Gemfile with sequel" do
+        generator_with_db.generate_gemfile
+        file_content = File.read(gemfile)
+        expect(file_content).to include "gem 'sequel'"
+        expect(file_content).to include "gem 'sequel_pg'"
+      end
     end
   end
 
@@ -98,10 +122,9 @@ DOC
 
     context "with sequel" do
       it "has sequel database connector" do
-        FileUtils.rm_r @dest if Dir.exists?(@dest)
-        generator_with_db = Melodiest::Generator.new @app, destination: @dest, with_database: true
+        FileUtils.rm_r @dest_with_db if Dir.exists?(@dest_with_db)
         generator_with_db.generate_app
-        app_file = "#{target_dir}/my_app.rb"
+        app_file = "#{target_dir_with_db}/my_app.rb"
         file_content = File.read(app_file)
 
         expected_file_content =

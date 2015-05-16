@@ -71,7 +71,7 @@ module Melodiest
         f.write("end\n\n")
         f.write("%w{app/models app/routes}.each do |dir|\n")
         f.write("  Dir[File.join(dir, '**/*.rb')].each do |file|\n")
-        f.write("    require file\n")
+        f.write("    require_relative file\n")
         f.write("  end\n")
         f.write("end\n")
       end

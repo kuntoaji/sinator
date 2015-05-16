@@ -112,7 +112,7 @@ end
 
 %w{app/models app/routes}.each do |dir|
   Dir[File.join(dir, '**/*.rb')].each do |file|
-    require file
+    require_relative file
   end
 end
 DOC
@@ -151,7 +151,7 @@ end
 
 %w{app/models app/routes}.each do |dir|
   Dir[File.join(dir, '**/*.rb')].each do |file|
-    require file
+    require_relative file
   end
 end
 DOC

@@ -98,7 +98,7 @@ describe Melodiest::Generator do
       expected_file_content =
 <<DOC
 class MyApp < Melodiest::Application
-  setup #{secret}
+  setup '#{secret}'
 
   set :app_file, __FILE__
   set :views, Proc.new { File.join(root, "app/views") }
@@ -137,7 +137,7 @@ DOC
 require 'yaml'
 
 class MyApp < Melodiest::Application
-  setup #{secret}
+  setup '#{secret}'
 
   set :app_file, __FILE__
   set :views, Proc.new { File.join(root, "app/views") }

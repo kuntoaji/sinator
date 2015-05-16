@@ -79,7 +79,7 @@ RSpec.configure do |config|
 end
 
 class SpecApp < Melodiest::Application
-  setup
+  setup 'supersecretcookiespec'
 end
 
 def app

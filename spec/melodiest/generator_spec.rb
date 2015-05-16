@@ -85,6 +85,8 @@ describe Melodiest::Generator do
   end
 
   describe "#generate_app" do
+    let(:secret) { "supersecretcookiefromgenerator" }
+    before { allow(SecureRandom).to receive(:hex).with(32).and_return(secret) }
 
     it "generates <app_name>.rb" do
       FileUtils.rm_r @dest if Dir.exists?(@dest)
@@ -95,7 +97,7 @@ describe Melodiest::Generator do
       expected_file_content =
 <<DOC
 class MyApp < Melodiest::Application
-  setup
+  setup #{secret}
 
   set :app_file, __FILE__
   set :views, Proc.new { File.join(root, "app/views") }
@@ -132,7 +134,7 @@ DOC
 require 'yaml'
 
 class MyApp < Melodiest::Application
-  setup
+  setup #{secret}
 
   set :app_file, __FILE__
   set :views, Proc.new { File.join(root, "app/views") }

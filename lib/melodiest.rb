@@ -1,5 +1,6 @@
 require 'sinatra/base'
 require 'sinatra/reloader'
+require 'encrypted_cookie'
 require 'melodiest/setting'
 
 module Melodiest

@@ -2,6 +2,7 @@ PATH
   remote: .
   specs:
     melodiest (0.2.1)
+      encrypted_cookie (= 0.0.4)
       sinatra (= 1.4.6)
       sinatra-contrib (= 1.4.2)
 
@@ -10,6 +11,7 @@ GEM
   specs:
     backports (3.6.4)
     diff-lcs (1.2.5)
+    encrypted_cookie (0.0.4)
     fakefs (0.6.7)
     multi_json (1.11.0)
     rack (1.6.0)

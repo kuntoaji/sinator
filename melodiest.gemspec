@@ -20,4 +20,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'fakefs', '0.6.7'
   s.add_runtime_dependency 'sinatra', '1.4.6'
   s.add_runtime_dependency 'sinatra-contrib', '1.4.2'
+  s.add_runtime_dependency 'encrypted_cookie', '0.0.4'
 end

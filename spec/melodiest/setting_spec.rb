@@ -2,7 +2,7 @@ describe Melodiest::Setting do
   describe ".setup" do
     let(:my_app) do
       class MyApp < Melodiest::Application
-        setup server: 'puma'
+        setup 'mysupersecretcookie', server: 'puma'
       end
 
       MyApp
@@ -15,5 +15,11 @@ describe Melodiest::Setting do
     it "overrides default setting" do
       expect(my_app.settings.server).to eq("puma")
     end
+
+    it "use encrypted cookie" do
+      expect(my_app.instance_variable_get("@middleware")).to include
+        [Rack::Session::EncryptedCookie, [{:secret => "mysupersecretcookie"}], nil]
+    end
+
   end
 end

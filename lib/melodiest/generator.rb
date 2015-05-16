@@ -1,4 +1,5 @@
 require 'fileutils'
+require 'securerandom'
 require_relative 'version'
 
 module Melodiest
@@ -59,7 +60,7 @@ module Melodiest
       File.open "#{@destination}/#{@app_name}.rb", "w" do |f|
         f.write(content[:yaml])
         f.write("class #{app_class_name} < Melodiest::Application\n")
-        f.write("  setup\n\n")
+        f.write("  setup #{SecureRandom.hex(32)}\n\n")
         f.write("  set :app_file, __FILE__\n")
         f.write("  set :views, Proc.new { File.join(root, \"app/views\") }\n\n")
         f.write("  configure do\n")

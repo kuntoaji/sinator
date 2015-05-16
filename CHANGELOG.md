@@ -4,6 +4,7 @@ development:
   * refactor Melodiest::Setting.setup so that it can be overridden via app and remove thin as dependency
   * add generator for sequel orm and postgres sql
   * use encrypted cookie
+  * add generator for Rack::Csrf
 
 0.2.x:
 

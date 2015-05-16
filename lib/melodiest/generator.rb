@@ -25,7 +25,8 @@ module Melodiest
       File.open "#{@destination}/Gemfile", "w" do |f|
         f.write("source 'https://rubygems.org'\n\n")
         f.write("gem 'melodiest', '#{Melodiest::VERSION}'\n")
-        f.write("gem 'thin'")
+        f.write("gem 'thin'\n")
+        f.write("gem 'rack_csrf'")
 
         if @with_database
           f.write("\ngem 'sequel'\n")
@@ -63,6 +64,7 @@ module Melodiest
         f.write("  setup #{SecureRandom.hex(32)}\n\n")
         f.write("  set :app_file, __FILE__\n")
         f.write("  set :views, Proc.new { File.join(root, \"app/views\") }\n\n")
+        f.write("  use Rack::Csrf, raise: true\n\n")
         f.write("  configure do\n")
         f.write(content[:database])
         f.write("  end\n")

@@ -50,6 +50,7 @@ describe Melodiest::Generator do
         expect(file_content).to include "source 'https://rubygems.org'"
         expect(file_content).to include "gem 'melodiest', '#{Melodiest::VERSION}'"
         expect(file_content).to include "gem 'thin'"
+        expect(file_content).to include "gem 'rack_csrf'"
         expect(file_content).to_not include "gem 'sequel'"
         expect(file_content).to_not include "gem 'sequel_pg'"
       end
@@ -102,6 +103,8 @@ class MyApp < Melodiest::Application
   set :app_file, __FILE__
   set :views, Proc.new { File.join(root, "app/views") }
 
+  use Rack::Csrf, raise: true
+
   configure do
     # Load up database and such
   end
@@ -138,6 +141,8 @@ class MyApp < Melodiest::Application
 
   set :app_file, __FILE__
   set :views, Proc.new { File.join(root, "app/views") }
+
+  use Rack::Csrf, raise: true
 
   configure do
     Sequel.connect YAML.load_file(File.expand_path("../config/database.yml", __FILE__))[settings.environment.to_s]

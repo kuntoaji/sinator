@@ -50,7 +50,7 @@ describe Melodiest::Generator do
         expect(file_content).to include "source 'https://rubygems.org'"
         expect(file_content).to include "gem 'melodiest', '#{Melodiest::VERSION}'"
         expect(file_content).to include "gem 'thin'"
-        expect(file_content).to include "gem 'rack_csrf'"
+        expect(file_content).to include "gem 'rack_csrf', require: 'rack/csrf'"
         expect(file_content).to_not include "gem 'sequel'"
         expect(file_content).to_not include "gem 'sequel_pg'"
       end

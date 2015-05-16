@@ -2,6 +2,8 @@ development:
 
   * remove Melodiest::Auth::Http module, it's better to use sinatra-authorization extension
   * refactor Melodiest::Setting.setup so that it can be overridden via app and remove thin as dependency
+  * add generator for sequel orm and postgres sql
+  * use encrypted cookie
 
 0.2.x:
 

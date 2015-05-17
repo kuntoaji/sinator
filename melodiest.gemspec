@@ -5,7 +5,7 @@ Gem::Specification.new do |s|
   s.version     = Melodiest::VERSION
   s.date        = Date.today.to_s
   s.summary     = "Sinatra application boilerplate"
-  s.description = "Melodiest provides generator and useful modules for your Sinatra application"
+  s.description = "Melodiest provides generator and contains minimalist configuration to develop application with Sinatra"
   s.author      = 'Kunto Aji Kristianto'
   s.email       = 'kunto.aji.kr@slackware-id.org'
   s.files       = `git ls-files -z`.split("\x0")

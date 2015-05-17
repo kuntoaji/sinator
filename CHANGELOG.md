@@ -1,4 +1,4 @@
-development:
+0.3.0:
 
   * remove Melodiest::Auth::Http module, it's better to use sinatra-authorization extension
   * refactor Melodiest::Setting.setup so that it can be overridden via app and remove thin as dependency

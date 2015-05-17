@@ -4,7 +4,6 @@ Melodiest is [Sinatra](http://www.sinatrarb.com/) application boilerplate. It pr
 
 ### Installation
 
-
 ```ruby
 gem install melodiest
 ```
@@ -34,7 +33,6 @@ Because Melodiest is already required Sinatra, you don't have to require 'sinatr
 
 `Melodiest::Application` is subclass from `Sinatra::Application` and by default is using configuration from `Melodiest::Setting.setup` method.
 
-
 ```ruby
 # my_app.rb
 
@@ -50,54 +48,53 @@ This example assume that PostgreSQL is already running and .
   3. run `bundle install`
   4. create `config/database.yml` and configure your database setting
   5. create file `db/migrations/001_create_artists.rb` and put the following code:
-```ruby
-Sequel.migration do
-  up do
-    create_table(:artists) do
-      primary_key :id
-      String :name, :null=>false
+  ```ruby
+  Sequel.migration do
+    up do
+      create_table(:artists) do
+        primary_key :id
+        String :name, :null=>false
+      end
+    end
+  
+    down do
+      drop_table(:artists)
     end
   end
-  
-  down do
-    drop_table(:artists)
-  end
-end
-```
+  ```
   6. run `rake db:migrate`
   7. create file `app/models/Artist.rb` and put the following code:
-```ruby
-class Artist < Sequel::Model
-end
-```
+  ```ruby
+  class Artist < Sequel::Model
+  end
+  ```
   8. create file `app/routes/artists.rb` and put the following code:
-```ruby
-class MyApp
-  get '/' do
-    "hello world!"
-  end
+  ```ruby
+  class MyApp
+    get '/' do
+      "hello world!"
+    end
 
-  get '/artists' do
-    # for example purpose :)
-    artist = Artist.new
-    artist.name = 'Melody'
-    artist.save
+    get '/artists' do
+      # for example purpose :)
+      artist = Artist.new
+      artist.name = 'Melody'
+      artist.save
     
-    @artists = Artist.all
-    erb :"artists/index"
+      @artists = Artist.all
+      erb :"artists/index"
+    end
   end
-end
-```
+  ```
   9. create file `app/views/artists/index.erb` and put the following code:
-```erb
-<h1>List of Artist</h1>
-<% @artists.each do |artist| %>
-  <li><%= artist.name %></li>
-<% end %>
-```
+  ```
+  <h1>List of Artist</h1>
+  <% @artists.each do |artist| %>
+    <li><%= artist.name %></li>
+  <% end %>
+  ```
   10. run the server `bundle exec rackup`
   11. open url `localhost:9292/artists`
-
 
 ### Default Configuration
 

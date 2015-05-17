@@ -100,7 +100,7 @@ This example assume that PostgreSQL is already running and desired database is a
   
   9. create file `app/views/artists/index.erb` and put the following code:
   
-  ```
+  ```erb
   <h1>List of Artist</h1>
   <% @artists.each do |artist| %>
     <li><%= artist.name %></li>

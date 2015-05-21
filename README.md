@@ -87,13 +87,16 @@ This example assume that PostgreSQL is already running and desired database is a
     end
 
     get '/artists' do
-      # for example purpose :)
-      artist = Artist.new
-      artist.name = 'Melody'
-      artist.save
-    
       @artists = Artist.all
       erb :"artists/index"
+    end
+    
+    post '/artists' do
+      @artist = Artist.new
+      @artist.name = params[:name]
+      @artist.save
+      
+      redirect '/artists'
     end
   end
   ```
@@ -102,9 +105,17 @@ This example assume that PostgreSQL is already running and desired database is a
   
   ```erb
   <h1>List of Artist</h1>
-  <% @artists.each do |artist| %>
-    <li><%= artist.name %></li>
-  <% end %>
+  <ul>
+    <% @artists.each do |artist| %>
+      <li><%= artist.name %></li>
+    <% end %>
+  </ul>
+  
+  <form action="/artists" method="post">
+    <%= Rack::Csrf.tag(env) %>
+    <input type="text" name="name" />
+    <button>Submit</button>
+  </form>
   ```
   
   10. run the server `bundle exec rackup`

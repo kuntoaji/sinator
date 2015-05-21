@@ -52,10 +52,19 @@ module Melodiest
 
       if @with_database
         content[:yaml] = "require 'yaml'\n\n"
-        content[:database] = "    Sequel.connect YAML.load_file(File.expand_path(\"../config/database.yml\", __FILE__))[settings.environment.to_s]\n"
+        content[:database] =  "  configure :development do\n"
+        content[:database] << "    require 'logger'\n\n"
+        content[:database] << "    Sequel.connect YAML.load_file(File.expand_path(\"../config/database.yml\", __FILE__))['development'],\n"
+        content[:database] << "      loggers: [Logger.new($stdout)]\n"
+        content[:database] << "  end\n\n"
+        content[:database] << "  configure :production do\n"
+        content[:database] << "    Sequel.connect YAML.load_file(File.expand_path(\"../config/database.yml\", __FILE__))['production']\n"
+        content[:database] << "  end\n"
       else
         content[:yaml] = nil
-        content[:database] = "    # Load up database and such\n"
+        content[:database] =  "  configure do\n"
+        content[:database] << "    # Load up database and such\n"
+        content[:database] << "  end\n"
       end
 
       File.open "#{@destination}/#{@app_name}.rb", "w" do |f|
@@ -65,9 +74,7 @@ module Melodiest
         f.write("  set :app_file, __FILE__\n")
         f.write("  set :views, Proc.new { File.join(root, \"app/views\") }\n\n")
         f.write("  use Rack::Csrf, raise: true\n\n")
-        f.write("  configure do\n")
         f.write(content[:database])
-        f.write("  end\n")
         f.write("end\n\n")
         f.write("%w{app/models app/routes}.each do |dir|\n")
         f.write("  Dir[File.join(dir, '**/*.rb')].each do |file|\n")

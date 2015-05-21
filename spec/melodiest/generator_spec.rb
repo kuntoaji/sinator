@@ -144,8 +144,15 @@ class MyApp < Melodiest::Application
 
   use Rack::Csrf, raise: true
 
-  configure do
-    Sequel.connect YAML.load_file(File.expand_path("../config/database.yml", __FILE__))[settings.environment.to_s]
+  configure :development do
+    require 'logger'
+
+    Sequel.connect YAML.load_file(File.expand_path("../config/database.yml", __FILE__))['development'],
+      loggers: [Logger.new($stdout)]
+  end
+
+  configure :production do
+    Sequel.connect YAML.load_file(File.expand_path("../config/database.yml", __FILE__))['production']
   end
 end
 

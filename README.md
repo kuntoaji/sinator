@@ -118,8 +118,8 @@ This example assume that PostgreSQL is already running and desired database is a
   </form>
   ```
   
-  10. run the server `bundle exec rackup`
-  11. open url `localhost:9292/artists`
+  10. run the server `bundle exec thin start`
+  11. open url `localhost:3000/artists`
 
 ### Default Configuration
 

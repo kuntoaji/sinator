@@ -49,7 +49,7 @@ end
 
 ### Example Usage
 This example assume that PostgreSQL is already running and desired database is already exist.
-For complete example see (github.com/kuntoaji/todo_melodiest)(https://github.com/kuntoaji/todo_melodiest)
+For complete example see [github.com/kuntoaji/todo_melodiest](https://github.com/kuntoaji/todo_melodiest)
   1. run `melodiest -n my_app -d`
   2. cd `my_app`
   3. run `bundle install`

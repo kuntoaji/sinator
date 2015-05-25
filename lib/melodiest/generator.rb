@@ -52,9 +52,9 @@ module Melodiest
 
       if @with_database
         content[:yaml] = "require 'yaml'\n\n"
-        content[:database] =  "  configure :development do\n"
+        content[:database] =  "  configure :development, :test do\n"
         content[:database] << "    require 'logger'\n\n"
-        content[:database] << "    Sequel.connect YAML.load_file(File.expand_path(\"../config/database.yml\", __FILE__))['development'],\n"
+        content[:database] << "    Sequel.connect YAML.load_file(File.expand_path(\"../config/database.yml\", __FILE__))[settings.environment.to_s],\n"
         content[:database] << "      loggers: [Logger.new($stdout)]\n"
         content[:database] << "  end\n\n"
         content[:database] << "  configure :production do\n"

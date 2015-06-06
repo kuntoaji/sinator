@@ -89,7 +89,7 @@ describe Melodiest::Generator do
     let(:secret) { "supersecretcookiefromgenerator" }
     before { allow(SecureRandom).to receive(:hex).with(32).and_return(secret) }
 
-    it "generates <app_name>.rb" do
+    it "generates <app_name>.rb, public dir, and app dir" do
       FileUtils.rm_r @dest if Dir.exists?(@dest)
       generator.generate_app
       app_file = "#{target_dir}/my_app.rb"
@@ -119,6 +119,7 @@ DOC
 
       expect(File.exists?(app_file)).to be_truthy
       expect(file_content).to eq expected_file_content
+      expect(Dir.exists?("#{target_dir}/public")).to be_truthy
       expect(Dir.exists?("#{target_dir}/app")).to be_truthy
       expect(Dir.exists?("#{target_dir}/app/routes")).to be_truthy
       expect(Dir.exists?("#{target_dir}/app/models")).to be_truthy

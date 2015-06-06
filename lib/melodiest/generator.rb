@@ -83,6 +83,8 @@ module Melodiest
         f.write("end\n")
       end
 
+      FileUtils.mkdir "#{@destination}/public"
+
       app_dir = "#{@destination}/app"
       ["", "/routes", "/models", "/views"].each do |dir|
         FileUtils.mkdir "#{app_dir}/#{dir}"

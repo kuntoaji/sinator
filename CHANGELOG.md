@@ -1,6 +1,7 @@
 development:
   * add SQL logger to development environment
   * generate public dir when running generator
+  * use tux as Sinatra console
 
 0.3.0:
 

@@ -26,6 +26,7 @@ module Melodiest
         f.write("source 'https://rubygems.org'\n\n")
         f.write("gem 'melodiest', '#{Melodiest::VERSION}'\n")
         f.write("gem 'thin'\n")
+        f.write("gem 'tux'\n")
         f.write("gem 'rack_csrf', require: 'rack/csrf'")
 
         if @with_database

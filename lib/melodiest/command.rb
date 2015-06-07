@@ -5,8 +5,9 @@ module Melodiest
 
   class Command
     def self.parse(options)
+      options = %w(--help) if options.empty? || options.nil?
       args = {}
-      result = ""
+      result = nil
 
       option_parser = OptionParser.new do |opts|
         opts.banner = "Usage: melodiest [options]"
@@ -52,7 +53,7 @@ module Melodiest
       msg = "#{args[:name]} is successfully generated"
       msg << " in #{args[:target]}" if args[:target]
 
-      msg 
+      msg
     end
   end
 

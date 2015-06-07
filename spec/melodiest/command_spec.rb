@@ -51,7 +51,16 @@ describe Melodiest::Command do
       it "does nothing" do
         app = Melodiest::Command.parse %w(--target /tmp/melodiest)
 
-        expect(app).to be_empty
+        expect(app).to be_nil
+      end
+    end
+
+    context "when has no option" do
+      it "uses --help option by default" do
+        help = Melodiest::Command.parse []
+
+        expect(help).to include "Usage: melodiest [options]"
+        expect(help).to include "Print this help"
       end
     end
   end

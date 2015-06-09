@@ -1,5 +1,4 @@
 require 'sinatra/base'
-require 'sinatra/reloader'
 require 'encrypted_cookie'
 require 'melodiest/setting'
 
@@ -9,6 +8,7 @@ module Melodiest
 
     # http://www.sinatrarb.com/contrib/reloader.html
     configure :development do
+      require 'sinatra/reloader'
       register Sinatra::Reloader
     end
   end

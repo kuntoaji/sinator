@@ -177,28 +177,32 @@ DOC
       let(:without_db_sample_migration) { "#{target_dir}/db_migrations/000_example.rb" }
 
       it "copies config dir" do
-        expect(File.exists?(config_dir)).to be_falsey
-        expect(File.exists?("#{config_dir}/database.yml.example")).to be_falsey
         expect(File.exists?(without_db_rakefile)).to be_falsey
         expect(File.exists?(without_db_sample_migration)).to be_falsey
         generator.copy_templates
 
-        expect(File.exists?(config_dir)).to be_truthy
-        expect(File.exists?("#{config_dir}/database.yml.example")).to be_truthy
+        expect(File.exists?(config_dir)).to be_falsey
+        expect(File.exists?("#{config_dir}/database.yml.example")).to be_falsey
         expect(File.exists?(without_db_rakefile)).to be_falsey
         expect(File.exists?(without_db_sample_migration)).to be_falsey
       end
     end
 
     context "when generating with database" do
+      let(:config_dir) { "#{target_dir_with_db}/config" }
       let(:with_db_rakefile) { "#{target_dir_with_db}/Rakefile" }
       let(:with_db_sample_migration) { "#{target_dir_with_db}/db/migrations/000_example.rb" }
 
       it "copies Rakefile" do
+        expect(File.exists?(config_dir)).to be_falsey
+        expect(File.exists?("#{config_dir}/database.yml.example")).to be_falsey
         expect(File.exists?(with_db_rakefile)).to be_falsey
         expect(File.exists?(with_db_sample_migration)).to be_falsey
+
         generator_with_db.copy_templates
 
+        expect(File.exists?(config_dir)).to be_truthy
+        expect(File.exists?("#{config_dir}/database.yml.example")).to be_truthy
         expect(File.exists?(with_db_rakefile)).to be_truthy
         expect(File.exists?(with_db_sample_migration)).to be_truthy
       end

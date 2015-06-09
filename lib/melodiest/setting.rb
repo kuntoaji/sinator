@@ -1,11 +1,7 @@
 module Melodiest
   module Setting
     def setup(cookie_secret, options={})
-      settings = {
-        server: 'thin'
-      }.merge(options)
-
-      settings.each do |key, value|
+      {server: 'thin'}.merge(options).each do |key, value|
         set key, value
       end
 

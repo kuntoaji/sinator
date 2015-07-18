@@ -1,3 +1,6 @@
+development:
+  * prevent tux to be required
+
 0.4.0:
   * add SQL logger to development environment
   * generate public dir when running generator

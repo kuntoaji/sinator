@@ -31,7 +31,9 @@ describe Melodiest::Generator do
   end
 
   it "has default destination path app_name" do
+    FileUtils.rm_r @app if Dir.exists?(@app)
     expect(Melodiest::Generator.new(@app).destination).to eq File.expand_path(@app)
+    FileUtils.rm_r @app
   end
 
   it "sets new destination path even if it's not exist yet" do
@@ -91,7 +93,7 @@ describe Melodiest::Generator do
     before { allow(SecureRandom).to receive(:hex).with(32).and_return(secret) }
 
     it "generates <app_name>.rb, public dir, and app dir" do
-      FileUtils.rm_r @dest if Dir.exists?(@dest)
+      FileUtils.rm_r target_dir if Dir.exists?(target_dir)
       generator.generate_app
       app_file = "#{target_dir}/my_app.rb"
       file_content = File.read(app_file)
@@ -129,7 +131,7 @@ DOC
 
     context "with sequel" do
       it "has sequel database connector" do
-        FileUtils.rm_r @dest_with_db if Dir.exists?(@dest_with_db)
+        FileUtils.rm_r target_dir_with_db if Dir.exists?(target_dir_with_db)
         generator_with_db.generate_app
         app_file = "#{target_dir_with_db}/my_app.rb"
         file_content = File.read(app_file)

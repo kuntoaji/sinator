@@ -54,6 +54,8 @@ describe Melodiest::Generator do
         expect(file_content).to include "gem 'thin'"
         expect(file_content).to include "gem 'tux', require: false"
         expect(file_content).to include "gem 'rack_csrf', require: 'rack/csrf'"
+        expect(file_content).to include "gem 'sinatra-asset-pipeline', require: 'sinatra/asset_pipeline'"
+        expect(file_content).to include "gem 'uglifier', require: false"
         expect(file_content).to_not include "gem 'sequel'"
         expect(file_content).to_not include "gem 'sequel_pg'"
       end
@@ -105,7 +107,10 @@ class MyApp < Melodiest::Application
 
   set :app_file, __FILE__
   set :views, Proc.new { File.join(root, "app/views") }
+  set :assets_css_compressor, :sass
+  set :assets_js_compressor, :uglifier
 
+  register Sinatra::AssetPipeline
   use Rack::Csrf, raise: true
 
   configure do
@@ -145,7 +150,10 @@ class MyApp < Melodiest::Application
 
   set :app_file, __FILE__
   set :views, Proc.new { File.join(root, "app/views") }
+  set :assets_css_compressor, :sass
+  set :assets_js_compressor, :uglifier
 
+  register Sinatra::AssetPipeline
   use Rack::Csrf, raise: true
 
   configure :development, :test do
@@ -175,31 +183,36 @@ DOC
   describe "#copy_templates" do
     context "when generating without database" do
       let(:config_dir) { "#{target_dir}/config" }
+      let(:assets_dir) { "#{target_dir}/assets" }
       let(:without_db_rakefile) { "#{target_dir}/Rakefile" }
       let(:without_db_sample_migration) { "#{target_dir}/db_migrations/000_example.rb" }
 
-      it "copies config dir" do
+      it "only copies assets dir" do
         expect(File.exists?(without_db_rakefile)).to be_falsey
         expect(File.exists?(without_db_sample_migration)).to be_falsey
+        expect(File.exists?(assets_dir)).to be_falsey
         generator.copy_templates
 
         expect(File.exists?(config_dir)).to be_falsey
         expect(File.exists?("#{config_dir}/database.yml.example")).to be_falsey
         expect(File.exists?(without_db_rakefile)).to be_falsey
         expect(File.exists?(without_db_sample_migration)).to be_falsey
+        expect(File.exists?(assets_dir)).to be_truthy
       end
     end
 
     context "when generating with database" do
       let(:config_dir) { "#{target_dir_with_db}/config" }
+      let(:assets_dir) { "#{target_dir_with_db}/assets" }
       let(:with_db_rakefile) { "#{target_dir_with_db}/Rakefile" }
       let(:with_db_sample_migration) { "#{target_dir_with_db}/db/migrations/000_example.rb" }
 
-      it "copies Rakefile" do
+      it "copies assets, config, and Rakefile" do
         expect(File.exists?(config_dir)).to be_falsey
         expect(File.exists?("#{config_dir}/database.yml.example")).to be_falsey
         expect(File.exists?(with_db_rakefile)).to be_falsey
         expect(File.exists?(with_db_sample_migration)).to be_falsey
+        expect(File.exists?(assets_dir)).to be_falsey
 
         generator_with_db.copy_templates
 
@@ -207,6 +220,7 @@ DOC
         expect(File.exists?("#{config_dir}/database.yml.example")).to be_truthy
         expect(File.exists?(with_db_rakefile)).to be_truthy
         expect(File.exists?(with_db_sample_migration)).to be_truthy
+        expect(File.exists?(assets_dir)).to be_truthy
       end
     end
   end

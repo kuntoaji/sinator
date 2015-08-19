@@ -27,6 +27,8 @@ module Melodiest
         f.write("gem 'melodiest', '#{Melodiest::VERSION}'\n")
         f.write("gem 'thin'\n")
         f.write("gem 'tux', require: false\n")
+        f.write("gem 'sinatra-asset-pipeline', require: 'sinatra/asset_pipeline'\n")
+        f.write("gem 'uglifier', require: false\n")
         f.write("gem 'rack_csrf', require: 'rack/csrf'")
 
         if @with_database
@@ -73,7 +75,10 @@ module Melodiest
         f.write("class #{app_class_name} < Melodiest::Application\n")
         f.write("  setup '#{SecureRandom.hex(32)}'\n\n")
         f.write("  set :app_file, __FILE__\n")
-        f.write("  set :views, Proc.new { File.join(root, \"app/views\") }\n\n")
+        f.write("  set :views, Proc.new { File.join(root, \"app/views\") }\n")
+        f.write("  set :assets_css_compressor, :sass\n")
+        f.write("  set :assets_js_compressor, :uglifier\n\n")
+        f.write("  register Sinatra::AssetPipeline\n")
         f.write("  use Rack::Csrf, raise: true\n\n")
         f.write(content[:database])
         f.write("end\n\n")
@@ -93,6 +98,8 @@ module Melodiest
     end
 
     def copy_templates
+      FileUtils.cp_r File.expand_path("../templates/assets", __FILE__), @destination
+
       if @with_database
         FileUtils.cp_r File.expand_path("../templates/config", __FILE__), @destination
         FileUtils.cp File.expand_path("../templates/Rakefile", __FILE__), @destination

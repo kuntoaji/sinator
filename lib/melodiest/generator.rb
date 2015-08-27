@@ -40,11 +40,9 @@ module Melodiest
 
     def generate_bundle_config
       File.open "#{@destination}/config.ru", "w" do |f|
-        f.write("ENV['RACK_ENV'] ||= 'development'\n\n")
-        f.write("require 'rubygems'\n")
-        f.write("require 'bundler'\n\n")
-        f.write("Bundler.require :default, ENV['RACK_ENV'].to_sym\n\n")
-        f.write("require './#{@app_name}'\n")
+        f.write("require File.expand_path('../config/boot.rb', __FILE__)\n")
+        f.write("require Melodiest::ROOT + '/#{@app_name}'\n")
+        f.write("require Melodiest::ROOT + '/config/application'\n\n")
         f.write("run #{@app_class_name}\n")
       end
     end
@@ -81,11 +79,6 @@ module Melodiest
         f.write("  register Sinatra::AssetPipeline\n")
         f.write("  use Rack::Csrf, raise: true\n\n")
         f.write(content[:database])
-        f.write("end\n\n")
-        f.write("%w{app/models app/routes}.each do |dir|\n")
-        f.write("  Dir[File.join(dir, '**/*.rb')].each do |file|\n")
-        f.write("    require_relative file\n")
-        f.write("  end\n")
         f.write("end\n")
       end
 
@@ -99,11 +92,13 @@ module Melodiest
 
     def copy_templates
       FileUtils.cp_r File.expand_path("../templates/assets", __FILE__), @destination
+      FileUtils.cp_r File.expand_path("../templates/config", __FILE__), @destination
 
       if @with_database
-        FileUtils.cp_r File.expand_path("../templates/config", __FILE__), @destination
         FileUtils.cp File.expand_path("../templates/Rakefile", __FILE__), @destination
         FileUtils.cp_r File.expand_path("../templates/db", __FILE__), @destination
+      else
+        FileUtils.rm "#{@destination}/config/database.yml.example"
       end
     end
   end

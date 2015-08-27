@@ -81,11 +81,9 @@ describe Melodiest::Generator do
       file_content = File.read(bundle_config)
 
       expect(File.exists?(bundle_config)).to be_truthy
-      expect(file_content).to include "ENV['RACK_ENV'] ||= 'development'"
-      expect(file_content).to include "require 'rubygems'"
-      expect(file_content).to include "require 'bundler'"
-      expect(file_content).to include "Bundler.require :default, ENV['RACK_ENV'].to_sym"
-      expect(file_content).to include "require './my_app'"
+      expect(file_content).to include "require File.expand_path('../config/boot.rb', __FILE__)"
+      expect(file_content).to include "require Melodiest::ROOT + '/#{@app}'"
+      expect(file_content).to include "require Melodiest::ROOT + '/config/application'"
       expect(file_content).to include "run MyApp"
     end
   end
@@ -115,12 +113,6 @@ class MyApp < Melodiest::Application
 
   configure do
     # Load up database and such
-  end
-end
-
-%w{app/models app/routes}.each do |dir|
-  Dir[File.join(dir, '**/*.rb')].each do |file|
-    require_relative file
   end
 end
 DOC
@@ -167,12 +159,6 @@ class MyApp < Melodiest::Application
     Sequel.connect YAML.load_file(File.expand_path("../config/database.yml", __FILE__))['production']
   end
 end
-
-%w{app/models app/routes}.each do |dir|
-  Dir[File.join(dir, '**/*.rb')].each do |file|
-    require_relative file
-  end
-end
 DOC
 
         expect(file_content).to eq expected_file_content
@@ -188,12 +174,13 @@ DOC
       let(:without_db_sample_migration) { "#{target_dir}/db_migrations/000_example.rb" }
 
       it "only copies assets dir" do
+        expect(File.exists?(config_dir)).to be_falsey
         expect(File.exists?(without_db_rakefile)).to be_falsey
         expect(File.exists?(without_db_sample_migration)).to be_falsey
         expect(File.exists?(assets_dir)).to be_falsey
         generator.copy_templates
 
-        expect(File.exists?(config_dir)).to be_falsey
+        expect(File.exists?(config_dir)).to be_truthy
         expect(File.exists?("#{config_dir}/database.yml.example")).to be_falsey
         expect(File.exists?(without_db_rakefile)).to be_falsey
         expect(File.exists?(without_db_sample_migration)).to be_falsey
@@ -210,6 +197,8 @@ DOC
       it "copies assets, config, and Rakefile" do
         expect(File.exists?(config_dir)).to be_falsey
         expect(File.exists?("#{config_dir}/database.yml.example")).to be_falsey
+        expect(File.exists?("#{config_dir}/boot.rb")).to be_falsey
+        expect(File.exists?("#{config_dir}/application.rb")).to be_falsey
         expect(File.exists?(with_db_rakefile)).to be_falsey
         expect(File.exists?(with_db_sample_migration)).to be_falsey
         expect(File.exists?(assets_dir)).to be_falsey
@@ -218,6 +207,8 @@ DOC
 
         expect(File.exists?(config_dir)).to be_truthy
         expect(File.exists?("#{config_dir}/database.yml.example")).to be_truthy
+        expect(File.exists?("#{config_dir}/boot.rb")).to be_truthy
+        expect(File.exists?("#{config_dir}/application.rb")).to be_truthy
         expect(File.exists?(with_db_rakefile)).to be_truthy
         expect(File.exists?(with_db_sample_migration)).to be_truthy
         expect(File.exists?(assets_dir)).to be_truthy

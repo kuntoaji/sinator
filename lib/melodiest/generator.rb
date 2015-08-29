@@ -1,5 +1,6 @@
 require 'fileutils'
 require 'securerandom'
+require 'erb'
 require_relative 'version'
 
 module Melodiest
@@ -22,64 +23,30 @@ module Melodiest
     end
 
     def generate_gemfile
-      File.open "#{@destination}/Gemfile", "w" do |f|
-        f.write("source 'https://rubygems.org'\n\n")
-        f.write("gem 'melodiest', '#{Melodiest::VERSION}'\n")
-        f.write("gem 'thin'\n")
-        f.write("gem 'tux', require: false\n")
-        f.write("gem 'sinatra-asset-pipeline', require: 'sinatra/asset_pipeline'\n")
-        f.write("gem 'uglifier', require: false\n")
-        f.write("gem 'rack_csrf', require: 'rack/csrf'")
+      gemfile = File.read File.expand_path("../templates/Gemfile.erb", __FILE__)
+      erb = ERB.new gemfile, 0, '-'
 
-        if @with_database
-          f.write("\ngem 'sequel'\n")
-          f.write("gem 'sequel_pg', require: 'sequel'")
-        end
+      File.open "#{@destination}/Gemfile", "w" do |f|
+        f.write erb.result(binding)
       end
     end
 
     def generate_bundle_config
+      config_ru = File.read File.expand_path("../templates/config.ru.erb", __FILE__)
+      erb = ERB.new config_ru
+
       File.open "#{@destination}/config.ru", "w" do |f|
-        f.write("require File.expand_path('../config/boot.rb', __FILE__)\n")
-        f.write("require Melodiest::ROOT + '/#{@app_name}'\n")
-        f.write("require Melodiest::ROOT + '/config/application'\n\n")
-        f.write("run #{@app_class_name}\n")
+        f.write erb.result(binding)
       end
     end
 
     # https://github.com/sinatra/sinatra-book/blob/master/book/Organizing_your_application.markdown
     def generate_app
-      content = {}
-
-      if @with_database
-        content[:yaml] = "require 'yaml'\n\n"
-        content[:database] =  "  configure :development, :test do\n"
-        content[:database] << "    require 'logger'\n\n"
-        content[:database] << "    Sequel.connect YAML.load_file(File.expand_path(\"../config/database.yml\", __FILE__))[settings.environment.to_s],\n"
-        content[:database] << "      loggers: [Logger.new($stdout)]\n"
-        content[:database] << "  end\n\n"
-        content[:database] << "  configure :production do\n"
-        content[:database] << "    Sequel.connect YAML.load_file(File.expand_path(\"../config/database.yml\", __FILE__))['production']\n"
-        content[:database] << "  end\n"
-      else
-        content[:yaml] = nil
-        content[:database] =  "  configure do\n"
-        content[:database] << "    # Load up database and such\n"
-        content[:database] << "  end\n"
-      end
+      app = File.read File.expand_path("../templates/app.erb", __FILE__)
+      erb = ERB.new app, 0, '-'
 
       File.open "#{@destination}/#{@app_name}.rb", "w" do |f|
-        f.write(content[:yaml])
-        f.write("class #{app_class_name} < Melodiest::Application\n")
-        f.write("  setup '#{SecureRandom.hex(32)}'\n\n")
-        f.write("  set :app_file, __FILE__\n")
-        f.write("  set :views, Proc.new { File.join(root, \"app/views\") }\n")
-        f.write("  set :assets_css_compressor, :sass\n")
-        f.write("  set :assets_js_compressor, :uglifier\n\n")
-        f.write("  register Sinatra::AssetPipeline\n")
-        f.write("  use Rack::Csrf, raise: true\n\n")
-        f.write(content[:database])
-        f.write("end\n")
+        f.write erb.result(binding)
       end
 
       FileUtils.mkdir "#{@destination}/public"

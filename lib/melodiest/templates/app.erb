@@ -1,0 +1,29 @@
+<%= "require 'yaml'\n\n" if @with_database -%>
+class <%= @app_class_name %> < Melodiest::Application
+  setup '<%= SecureRandom.hex 32 %>'
+
+  set :app_file, __FILE__
+  set :views, Proc.new { File.join(root, "app/views") }
+  set :assets_css_compressor, :sass
+  set :assets_js_compressor, :uglifier
+
+  register Sinatra::AssetPipeline
+  use Rack::Csrf, raise: true
+
+<% if @with_database -%>
+  configure :development, :test do
+    require 'logger'
+
+    Sequel.connect YAML.load_file(File.expand_path("../config/database.yml", __FILE__))[settings.environment.to_s],
+      loggers: [Logger.new($stdout)]
+  end
+
+  configure :production do
+    Sequel.connect YAML.load_file(File.expand_path("../config/database.yml", __FILE__))['production']
+  end
+<% else -%>
+  configure do
+    # Load up database and such
+  end
+<% end -%>
+end

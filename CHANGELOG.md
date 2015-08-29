@@ -2,6 +2,7 @@ development:
   * prevent tux to be required
   * add sinatra assets pipeline extension
   * restructure generated app
+  * use erb for app templates
 
 0.4.0:
   * add SQL logger to development environment

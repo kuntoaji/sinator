@@ -42,7 +42,6 @@ describe Melodiest::Command do
     it "has --database option" do
       app = Melodiest::Command.parse %w(-n my_app --target /tmp -d)
 
-      puts `ls /tmp/my_app`
       expect(app).to include "my_app is successfully generated in /tmp"
       expect(Dir.exists?("/tmp/my_app/db")).to be_truthy
     end

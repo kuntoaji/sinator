@@ -3,6 +3,7 @@ development:
   * add sinatra assets pipeline extension
   * restructure generated app
   * use erb for app templates
+  * create Rakefile generator with and without database
 
 0.4.0:
   * add SQL logger to development environment

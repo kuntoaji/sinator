@@ -22,6 +22,15 @@ module Melodiest
       @destination = File.expand_path(destination)
     end
 
+    def generate_rakefile
+      gemfile = File.read File.expand_path("../templates/Rakefile.erb", __FILE__)
+      erb = ERB.new gemfile, 0, '-'
+
+      File.open "#{@destination}/Rakefile", "w" do |f|
+        f.write erb.result(binding)
+      end
+    end
+
     def generate_gemfile
       gemfile = File.read File.expand_path("../templates/Gemfile.erb", __FILE__)
       erb = ERB.new gemfile, 0, '-'
@@ -62,7 +71,6 @@ module Melodiest
       FileUtils.cp_r File.expand_path("../templates/config", __FILE__), @destination
 
       if @with_database
-        FileUtils.cp File.expand_path("../templates/Rakefile", __FILE__), @destination
         FileUtils.cp_r File.expand_path("../templates/db", __FILE__), @destination
       else
         FileUtils.rm "#{@destination}/config/database.yml.example"

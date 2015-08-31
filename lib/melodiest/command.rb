@@ -45,6 +45,7 @@ module Melodiest
       generator = Melodiest::Generator.new args[:name],
         destination: args[:target], with_database: args[:database]
 
+      generator.generate_rakefile
       generator.generate_gemfile
       generator.generate_bundle_config
       generator.generate_app

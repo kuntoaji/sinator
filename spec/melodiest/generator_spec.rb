@@ -170,19 +170,16 @@ DOC
     context "when generating without database" do
       let(:config_dir) { "#{target_dir}/config" }
       let(:assets_dir) { "#{target_dir}/assets" }
-      let(:without_db_rakefile) { "#{target_dir}/Rakefile" }
       let(:without_db_sample_migration) { "#{target_dir}/db_migrations/000_example.rb" }
 
       it "only copies assets dir" do
         expect(File.exists?(config_dir)).to be_falsey
-        expect(File.exists?(without_db_rakefile)).to be_falsey
         expect(File.exists?(without_db_sample_migration)).to be_falsey
         expect(File.exists?(assets_dir)).to be_falsey
         generator.copy_templates
 
         expect(File.exists?(config_dir)).to be_truthy
         expect(File.exists?("#{config_dir}/database.yml.example")).to be_falsey
-        expect(File.exists?(without_db_rakefile)).to be_falsey
         expect(File.exists?(without_db_sample_migration)).to be_falsey
         expect(File.exists?(assets_dir)).to be_truthy
       end
@@ -191,7 +188,6 @@ DOC
     context "when generating with database" do
       let(:config_dir) { "#{target_dir_with_db}/config" }
       let(:assets_dir) { "#{target_dir_with_db}/assets" }
-      let(:with_db_rakefile) { "#{target_dir_with_db}/Rakefile" }
       let(:with_db_sample_migration) { "#{target_dir_with_db}/db/migrations/000_example.rb" }
 
       it "copies assets, config, and Rakefile" do
@@ -199,7 +195,6 @@ DOC
         expect(File.exists?("#{config_dir}/database.yml.example")).to be_falsey
         expect(File.exists?("#{config_dir}/boot.rb")).to be_falsey
         expect(File.exists?("#{config_dir}/application.rb")).to be_falsey
-        expect(File.exists?(with_db_rakefile)).to be_falsey
         expect(File.exists?(with_db_sample_migration)).to be_falsey
         expect(File.exists?(assets_dir)).to be_falsey
 
@@ -209,9 +204,64 @@ DOC
         expect(File.exists?("#{config_dir}/database.yml.example")).to be_truthy
         expect(File.exists?("#{config_dir}/boot.rb")).to be_truthy
         expect(File.exists?("#{config_dir}/application.rb")).to be_truthy
-        expect(File.exists?(with_db_rakefile)).to be_truthy
         expect(File.exists?(with_db_sample_migration)).to be_truthy
         expect(File.exists?(assets_dir)).to be_truthy
+      end
+    end
+  end
+
+  describe "#generate_rakefile" do
+    it "generate basic Rakefile tasks" do
+      expected_rakefile_content =
+<<RAKEFILE
+require_relative 'config/boot'
+require_relative '#{@app}'
+require 'sinatra/asset_pipeline/task'
+
+Sinatra::AssetPipeline::Task.define! MyApp
+RAKEFILE
+
+      generator.generate_rakefile
+      rakefile = "#{target_dir}/Rakefile"
+      rakefile_content = File.read(rakefile)
+
+      expect(rakefile_content).to eq expected_rakefile_content
+    end
+
+    context "with database" do
+      it "generates db related tasks" do
+
+        expected_rakefile_content =
+<<RAKEFILE
+require_relative 'config/boot'
+require_relative '#{@app}'
+require 'sinatra/asset_pipeline/task'
+
+Sinatra::AssetPipeline::Task.define! MyApp
+
+namespace :db do
+  desc "Run migrations"
+  task :migrate, [:version] do |t, args|
+    Sequel.extension :migration
+    db = Sequel.connect(YAML.load_file("\#{Melodiest::ROOT}/config/database.yml")[ENV['RACK_ENV']])
+    migration_path = "\#{Melodiest::ROOT}/db/migrations"
+
+    if args[:version]
+      puts "Migrating to version \#{args[:version]}"
+      Sequel::Migrator.run(db, migration_path, target: args[:version].to_i)
+    else
+      puts "Migrating to latest"
+      Sequel::Migrator.run(db, migration_path)
+    end
+  end
+end
+RAKEFILE
+
+        generator_with_db.generate_rakefile
+        rakefile = "#{target_dir_with_db}/Rakefile"
+        rakefile_content = File.read(rakefile)
+
+        expect(rakefile_content).to eq expected_rakefile_content
       end
     end
   end

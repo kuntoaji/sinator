@@ -4,6 +4,7 @@ development:
   * restructure generated app
   * use erb for app templates
   * create Rakefile generator with and without database
+  * add new Sequel configuration when generating app with database
 
 0.4.0:
   * add SQL logger to development environment

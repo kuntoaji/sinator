@@ -1,0 +1,15 @@
+class MyApp < Melodiest::Application
+  setup 'supersecretcookiefromgenerator'
+
+  set :app_file, __FILE__
+  set :views, Proc.new { File.join(root, "app/views") }
+  set :assets_css_compressor, :sass
+  set :assets_js_compressor, :uglifier
+
+  register Sinatra::AssetPipeline
+  use Rack::Csrf, raise: true
+
+  configure do
+    # Load up database and such
+  end
+end

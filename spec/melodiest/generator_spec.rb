@@ -97,25 +97,7 @@ describe Melodiest::Generator do
       generator.generate_app
       app_file = "#{target_dir}/my_app.rb"
       file_content = File.read(app_file)
-
-      expected_file_content =
-<<DOC
-class MyApp < Melodiest::Application
-  setup '#{secret}'
-
-  set :app_file, __FILE__
-  set :views, Proc.new { File.join(root, "app/views") }
-  set :assets_css_compressor, :sass
-  set :assets_js_compressor, :uglifier
-
-  register Sinatra::AssetPipeline
-  use Rack::Csrf, raise: true
-
-  configure do
-    # Load up database and such
-  end
-end
-DOC
+      expected_file_content = File.read(File.expand_path("../../fixtures/without_db/app.txt", __FILE__))
 
       expect(File.exists?(app_file)).to be_truthy
       expect(file_content).to eq expected_file_content
@@ -132,34 +114,7 @@ DOC
         generator_with_db.generate_app
         app_file = "#{target_dir_with_db}/my_app.rb"
         file_content = File.read(app_file)
-
-        expected_file_content =
-<<DOC
-require 'yaml'
-
-class MyApp < Melodiest::Application
-  setup '#{secret}'
-
-  set :app_file, __FILE__
-  set :views, Proc.new { File.join(root, "app/views") }
-  set :assets_css_compressor, :sass
-  set :assets_js_compressor, :uglifier
-
-  register Sinatra::AssetPipeline
-  use Rack::Csrf, raise: true
-
-  configure :development, :test do
-    require 'logger'
-
-    Sequel.connect YAML.load_file(File.expand_path("../config/database.yml", __FILE__))[settings.environment.to_s],
-      loggers: [Logger.new($stdout)]
-  end
-
-  configure :production do
-    Sequel.connect YAML.load_file(File.expand_path("../config/database.yml", __FILE__))['production']
-  end
-end
-DOC
+        expected_file_content = File.read(File.expand_path("../../fixtures/with_db/app.txt", __FILE__))
 
         expect(file_content).to eq expected_file_content
       end
@@ -213,13 +168,7 @@ DOC
   describe "#generate_rakefile" do
     it "generate basic Rakefile tasks" do
       expected_rakefile_content =
-<<RAKEFILE
-require_relative 'config/boot'
-require_relative '#{@app}'
-require 'sinatra/asset_pipeline/task'
-
-Sinatra::AssetPipeline::Task.define! MyApp
-RAKEFILE
+      expected_rakefile_content = File.read(File.expand_path("../../fixtures/without_db/rakefile.txt", __FILE__))
 
       generator.generate_rakefile
       rakefile = "#{target_dir}/Rakefile"
@@ -230,32 +179,7 @@ RAKEFILE
 
     context "with database" do
       it "generates db related tasks" do
-
-        expected_rakefile_content =
-<<RAKEFILE
-require_relative 'config/boot'
-require_relative '#{@app}'
-require 'sinatra/asset_pipeline/task'
-
-Sinatra::AssetPipeline::Task.define! MyApp
-
-namespace :db do
-  desc "Run migrations"
-  task :migrate, [:version] do |t, args|
-    Sequel.extension :migration
-    db = Sequel.connect(YAML.load_file("\#{Melodiest::ROOT}/config/database.yml")[ENV['RACK_ENV']])
-    migration_path = "\#{Melodiest::ROOT}/db/migrations"
-
-    if args[:version]
-      puts "Migrating to version \#{args[:version]}"
-      Sequel::Migrator.run(db, migration_path, target: args[:version].to_i)
-    else
-      puts "Migrating to latest"
-      Sequel::Migrator.run(db, migration_path)
-    end
-  end
-end
-RAKEFILE
+        expected_rakefile_content = File.read(File.expand_path("../../fixtures/with_db/rakefile.txt", __FILE__))
 
         generator_with_db.generate_rakefile
         rakefile = "#{target_dir_with_db}/Rakefile"

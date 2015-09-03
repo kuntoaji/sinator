@@ -74,12 +74,10 @@ describe Melodiest::Generator do
     it "should generate config.ru with correct content" do
       generator.generate_bundle_config
       file_content = File.read(bundle_config)
+      expected_file_content = File.read(File.expand_path("../../fixtures/config_ru.txt", __FILE__))
 
       expect(File.exists?(bundle_config)).to be_truthy
-      expect(file_content).to include "require File.expand_path('../config/boot.rb', __FILE__)"
-      expect(file_content).to include "require Melodiest::ROOT + '/#{@app}'"
-      expect(file_content).to include "require Melodiest::ROOT + '/config/application'"
-      expect(file_content).to include "run MyApp"
+      expect(file_content).to eq(expected_file_content)
     end
   end
 

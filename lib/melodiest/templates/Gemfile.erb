@@ -9,4 +9,8 @@ gem 'rack_csrf', require: 'rack/csrf'
 <% if @with_database -%>
 gem 'sequel'
 gem 'sequel_pg', require: 'sequel'
+
+group :production do
+  gem 'sinatra-cache'
+end
 <% end -%>

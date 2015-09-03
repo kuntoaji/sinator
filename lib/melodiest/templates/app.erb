@@ -30,6 +30,13 @@ class <%= @app_class_name %> < Melodiest::Application
   end
 
   configure :production do
+    # Serve assets via Nginx or Apache
+    disable :static
+
+    register Sinatra::Cache
+    set :cache_enabled, true
+    set :cache_output_dir, Proc.new { File.join(root, "public/cache") }
+
     Sequel.connect YAML.load_file(File.expand_path("../config/database.yml", __FILE__))['production']
   end
 <% else -%>

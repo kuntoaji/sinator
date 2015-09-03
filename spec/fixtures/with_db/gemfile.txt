@@ -8,3 +8,7 @@ gem 'uglifier', require: false
 gem 'rack_csrf', require: 'rack/csrf'
 gem 'sequel'
 gem 'sequel_pg', require: 'sequel'
+
+group :production do
+  gem 'sinatra-cache'
+end

@@ -47,17 +47,10 @@ describe Melodiest::Generator do
       it "should generate Gemfile without sequel" do
         generator.generate_gemfile
         file_content = File.read(gemfile)
+        expected_file_content = File.read(File.expand_path("../../fixtures/without_db/gemfile.txt", __FILE__))
 
         expect(File.exists?(gemfile)).to be_truthy
-        expect(file_content).to include "source 'https://rubygems.org'"
-        expect(file_content).to include "gem 'melodiest', '#{Melodiest::VERSION}'"
-        expect(file_content).to include "gem 'thin'"
-        expect(file_content).to include "gem 'tux', require: false"
-        expect(file_content).to include "gem 'rack_csrf', require: 'rack/csrf'"
-        expect(file_content).to include "gem 'sinatra-asset-pipeline', require: 'sinatra/asset_pipeline'"
-        expect(file_content).to include "gem 'uglifier', require: false"
-        expect(file_content).to_not include "gem 'sequel'"
-        expect(file_content).to_not include "gem 'sequel_pg'"
+        expect(file_content).to eq(expected_file_content)
       end
     end
 
@@ -67,8 +60,10 @@ describe Melodiest::Generator do
       it "should generate Gemfile with sequel" do
         generator_with_db.generate_gemfile
         file_content = File.read(gemfile)
-        expect(file_content).to include "gem 'sequel'"
-        expect(file_content).to include "gem 'sequel_pg'"
+        expected_file_content = File.read(File.expand_path("../../fixtures/with_db/gemfile.txt", __FILE__))
+
+        expect(File.exists?(gemfile)).to be_truthy
+        expect(file_content).to eq(expected_file_content)
       end
     end
   end

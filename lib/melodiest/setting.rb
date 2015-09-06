@@ -1,10 +1,6 @@
 module Melodiest
   module Setting
-    def setup(cookie_secret, options={})
-      {server: 'thin'}.merge(options).each do |key, value|
-        set key, value
-      end
-
+    def setup(cookie_secret)
       use Rack::Session::EncryptedCookie,
         secret: cookie_secret
     end

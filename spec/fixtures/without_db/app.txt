@@ -1,5 +1,5 @@
 class MyApp < Melodiest::Application
-  setup 'supersecretcookiefromgenerator'
+  cookie_secret 'supersecretcookiefromgenerator'
 
   set :app_file, __FILE__
   set :views, Proc.new { File.join(root, "app/views") }

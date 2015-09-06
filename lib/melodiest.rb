@@ -1,10 +1,12 @@
 require 'sinatra/base'
 require 'encrypted_cookie'
-require 'melodiest/setting'
 
 module Melodiest
   class Application < Sinatra::Application
-    register Melodiest::Setting
+    def self.cookie_secret(secret)
+      use Rack::Session::EncryptedCookie,
+        secret: secret
+    end
 
     # http://www.sinatrarb.com/contrib/reloader.html
     configure :development do

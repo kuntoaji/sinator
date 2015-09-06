@@ -6,6 +6,7 @@ development:
   * create Rakefile generator with and without database
   * add new Sequel configuration when generating app with database
   * add Sinatra::Cache extension
+  * remove Melodiest::Setting. Rename setup method to cookie_secret.
 
 0.4.0:
   * add SQL logger to development environment

@@ -51,6 +51,7 @@ module Melodiest
 
     # https://github.com/sinatra/sinatra-book/blob/master/book/Organizing_your_application.markdown
     def generate_app
+      copy_templates
       app = File.read File.expand_path("../templates/app.erb", __FILE__)
       erb = ERB.new app, 0, '-'
 
@@ -58,17 +59,23 @@ module Melodiest
         f.write erb.result(binding)
       end
 
-      FileUtils.mkdir "#{@destination}/public"
+      route = File.read File.expand_path("../templates/app/routes/home.erb", __FILE__)
+      erb = ERB.new route, 0, '-'
 
-      app_dir = "#{@destination}/app"
-      ["", "/routes", "/models", "/views"].each do |dir|
-        FileUtils.mkdir "#{app_dir}/#{dir}"
+      File.open "#{@destination}/app/routes/home.rb", "w" do |f|
+        f.write erb.result(binding)
       end
+
+      FileUtils.rm "#{@destination}/app/routes/home.erb"
     end
+
+    private
 
     def copy_templates
       FileUtils.cp_r File.expand_path("../templates/assets", __FILE__), @destination
       FileUtils.cp_r File.expand_path("../templates/config", __FILE__), @destination
+      FileUtils.cp_r File.expand_path("../templates/public", __FILE__), @destination
+      FileUtils.cp_r File.expand_path("../templates/app", __FILE__), @destination
 
       if @with_database
         FileUtils.cp_r File.expand_path("../templates/db", __FILE__), @destination

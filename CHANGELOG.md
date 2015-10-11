@@ -7,6 +7,8 @@ development:
   * add new Sequel configuration when generating app with database
   * add Sinatra::Cache extension
   * remove Melodiest::Setting. Rename setup method to cookie_secret.
+  * restructure generated app
+  * add some configurations from h5bp
 
 0.4.0:
   * add SQL logger to development environment

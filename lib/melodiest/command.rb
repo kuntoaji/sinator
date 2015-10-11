@@ -49,7 +49,6 @@ module Melodiest
       generator.generate_gemfile
       generator.generate_bundle_config
       generator.generate_app
-      generator.copy_templates
 
       msg = "#{args[:name]} is successfully generated"
       msg << " in #{args[:target]}" if args[:target]

@@ -82,78 +82,133 @@ describe Melodiest::Generator do
   end
 
   describe "#generate_app" do
-    let(:secret) { "supersecretcookiefromgenerator" }
-    before { allow(SecureRandom).to receive(:hex).with(32).and_return(secret) }
+    before { FileUtils.rm_r @dest if Dir.exists?(@dest) }
+    before { FileUtils.rm_r @dest_with_db if Dir.exists?(@dest_with_db) }
 
-    it "generates <app_name>.rb, public dir, and app dir" do
-      FileUtils.rm_r target_dir if Dir.exists?(target_dir)
+    it "generates home route" do
       generator.generate_app
-      app_file = "#{target_dir}/my_app.rb"
+
+      app_file = "#{target_dir}/app/routes/home.rb"
+      erb_file = "#{target_dir}/app/routes/home.erb"
       file_content = File.read(app_file)
-      expected_file_content = File.read(File.expand_path("../../fixtures/without_db/app.txt", __FILE__))
+      expected_file_content = File.read(File.expand_path("../../fixtures/app_routes_home.txt", __FILE__))
 
       expect(File.exists?(app_file)).to be_truthy
+      expect(File.exists?(erb_file)).to be_falsey
       expect(file_content).to eq expected_file_content
-      expect(Dir.exists?("#{target_dir}/public")).to be_truthy
-      expect(Dir.exists?("#{target_dir}/app")).to be_truthy
-      expect(Dir.exists?("#{target_dir}/app/routes")).to be_truthy
-      expect(Dir.exists?("#{target_dir}/app/models")).to be_truthy
-      expect(Dir.exists?("#{target_dir}/app/views")).to be_truthy
     end
 
-    context "with sequel" do
-      it "has sequel database connector" do
-        FileUtils.rm_r target_dir_with_db if Dir.exists?(target_dir_with_db)
-        generator_with_db.generate_app
-        app_file = "#{target_dir_with_db}/my_app.rb"
-        file_content = File.read(app_file)
-        expected_file_content = File.read(File.expand_path("../../fixtures/with_db/app.txt", __FILE__))
-
-        expect(file_content).to eq expected_file_content
-      end
-    end
-  end
-
-  describe "#copy_templates" do
     context "when generating without database" do
-      let(:config_dir) { "#{target_dir}/config" }
-      let(:assets_dir) { "#{target_dir}/assets" }
-      let(:without_db_sample_migration) { "#{target_dir}/db_migrations/000_example.rb" }
+      describe "copy_templates" do
+        let(:config_dir) { "#{target_dir}/config" }
+        let(:assets_dir) { "#{target_dir}/assets" }
+        let(:public_dir) { "#{target_dir}/public" }
+        let(:without_db_sample_migration) { "#{target_dir}/db_migrations/000_example.rb" }
 
-      it "only copies assets dir" do
-        expect(File.exists?(config_dir)).to be_falsey
-        expect(File.exists?(without_db_sample_migration)).to be_falsey
-        expect(File.exists?(assets_dir)).to be_falsey
-        generator.copy_templates
+        it "copies from melodiest templates" do
+          expect(File.exists?(config_dir)).to be_falsey
+          expect(File.exists?(without_db_sample_migration)).to be_falsey
+          expect(File.exists?(assets_dir)).to be_falsey
+          expect(File.exists?(public_dir)).to be_falsey
 
-        expect(File.exists?(config_dir)).to be_truthy
-        expect(File.exists?("#{config_dir}/database.yml.example")).to be_falsey
-        expect(File.exists?(without_db_sample_migration)).to be_falsey
-        expect(File.exists?(assets_dir)).to be_truthy
+          expect(Dir.exists?("#{target_dir}/app")).to be_falsey
+          expect(Dir.exists?("#{target_dir}/app/routes")).to be_falsey
+          expect(Dir.exists?("#{target_dir}/app/models")).to be_falsey
+          expect(Dir.exists?("#{target_dir}/app/views")).to be_falsey
+          expect(File.exists?("#{target_dir}/app/views/layout.erb")).to be_falsey
+          expect(File.exists?("#{target_dir}/app/views/home/index.erb")).to be_falsey
+
+          generator.generate_app
+
+          expect(File.exists?(config_dir)).to be_truthy
+          expect(File.exists?("#{config_dir}/database.yml.example")).to be_falsey
+          expect(File.exists?(without_db_sample_migration)).to be_falsey
+          expect(File.exists?(assets_dir)).to be_truthy
+          expect(File.exists?(public_dir)).to be_truthy
+
+          expect(Dir.exists?("#{target_dir}/app")).to be_truthy
+          expect(Dir.exists?("#{target_dir}/app/routes")).to be_truthy
+          expect(Dir.exists?("#{target_dir}/app/models")).to be_truthy
+          expect(Dir.exists?("#{target_dir}/app/views")).to be_truthy
+          expect(File.exists?("#{target_dir}/app/views/layout.erb")).to be_truthy
+          expect(File.exists?("#{target_dir}/app/views/home/index.erb")).to be_truthy
+        end
+      end
+
+      describe "app file" do
+        let(:secret) { "supersecretcookiefromgenerator" }
+        before { allow(SecureRandom).to receive(:hex).with(32).and_return(secret) }
+
+        it "generates <app_name>.rb, public dir, and app dir" do
+          generator.generate_app
+
+          app_file = "#{target_dir}/my_app.rb"
+          file_content = File.read(app_file)
+          expected_file_content = File.read(File.expand_path("../../fixtures/without_db/app.txt", __FILE__))
+
+          expect(File.exists?(app_file)).to be_truthy
+          expect(file_content).to eq expected_file_content
+        end
       end
     end
 
     context "when generating with database" do
-      let(:config_dir) { "#{target_dir_with_db}/config" }
-      let(:assets_dir) { "#{target_dir_with_db}/assets" }
-      let(:with_db_sample_migration) { "#{target_dir_with_db}/db/migrations/000_example.rb" }
+      describe "copy templates" do
+        let(:config_dir) { "#{target_dir_with_db}/config" }
+        let(:assets_dir) { "#{target_dir_with_db}/assets" }
+        let(:public_dir) { "#{target_dir_with_db}/public" }
+        let(:with_db_sample_migration) { "#{target_dir_with_db}/db/migrations/000_example.rb" }
 
-      it "copies assets, config, and Rakefile" do
-        expect(File.exists?(config_dir)).to be_falsey
-        expect(File.exists?("#{config_dir}/database.yml.example")).to be_falsey
-        expect(File.exists?("#{config_dir}/boot.rb")).to be_falsey
-        expect(File.exists?("#{config_dir}/application.rb")).to be_falsey
-        expect(File.exists?(with_db_sample_migration)).to be_falsey
-        expect(File.exists?(assets_dir)).to be_falsey
+        it "copies from melodiest templates" do
+          expect(File.exists?(config_dir)).to be_falsey
+          expect(File.exists?("#{config_dir}/database.yml.example")).to be_falsey
+          expect(File.exists?("#{config_dir}/boot.rb")).to be_falsey
+          expect(File.exists?("#{config_dir}/application.rb")).to be_falsey
 
-        generator_with_db.copy_templates
+          expect(File.exists?(with_db_sample_migration)).to be_falsey
+          expect(File.exists?(assets_dir)).to be_falsey
+          expect(File.exists?(public_dir)).to be_falsey
 
-        expect(File.exists?(config_dir)).to be_truthy
-        expect(File.exists?("#{config_dir}/database.yml.example")).to be_truthy
-        expect(File.exists?("#{config_dir}/boot.rb")).to be_truthy
-        expect(File.exists?("#{config_dir}/application.rb")).to be_truthy
-        expect(File.exists?(with_db_sample_migration)).to be_truthy
-        expect(File.exists?(assets_dir)).to be_truthy
+          expect(Dir.exists?("#{target_dir_with_db}/app")).to be_falsey
+          expect(Dir.exists?("#{target_dir_with_db}/app/routes")).to be_falsey
+          expect(Dir.exists?("#{target_dir_with_db}/app/models")).to be_falsey
+          expect(Dir.exists?("#{target_dir_with_db}/app/views")).to be_falsey
+          expect(File.exists?("#{target_dir_with_db}/app/views/layout.erb")).to be_falsey
+          expect(File.exists?("#{target_dir_with_db}/app/views/home/index.erb")).to be_falsey
+
+          generator_with_db.generate_app
+
+          expect(File.exists?(config_dir)).to be_truthy
+          expect(File.exists?("#{config_dir}/database.yml.example")).to be_truthy
+          expect(File.exists?("#{config_dir}/boot.rb")).to be_truthy
+          expect(File.exists?("#{config_dir}/application.rb")).to be_truthy
+
+          expect(File.exists?(with_db_sample_migration)).to be_truthy
+          expect(File.exists?(assets_dir)).to be_truthy
+          expect(File.exists?(public_dir)).to be_truthy
+
+          expect(Dir.exists?("#{target_dir_with_db}/app")).to be_truthy
+          expect(Dir.exists?("#{target_dir_with_db}/app/routes")).to be_truthy
+          expect(Dir.exists?("#{target_dir_with_db}/app/models")).to be_truthy
+          expect(Dir.exists?("#{target_dir_with_db}/app/views")).to be_truthy
+          expect(File.exists?("#{target_dir_with_db}/app/views/layout.erb")).to be_truthy
+          expect(File.exists?("#{target_dir_with_db}/app/views/home/index.erb")).to be_truthy
+        end
+      end
+
+      describe "app file" do
+        let(:secret) { "supersecretcookiefromgenerator" }
+        before { allow(SecureRandom).to receive(:hex).with(32).and_return(secret) }
+
+        it "has sequel database connector" do
+          generator_with_db.generate_app
+
+          app_file = "#{target_dir_with_db}/my_app.rb"
+          file_content = File.read(app_file)
+          expected_file_content = File.read(File.expand_path("../../fixtures/with_db/app.txt", __FILE__))
+
+          expect(file_content).to eq expected_file_content
+        end
       end
     end
   end

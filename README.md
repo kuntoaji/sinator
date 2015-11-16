@@ -1,6 +1,8 @@
-# Melodiest
+# Background
 
-Melodiest is [Sinatra](http://www.sinatrarb.com/) application boilerplate. It provides generator and contains minimalist configuration to develop application with Sinatra.
+Melodiest is [Sinatra](http://www.sinatrarb.com/) application boilerplate. It provides generator and contains minimum configuration to develop application with Sinatra.
+The reason why I create Melodiest is because I want to create many small web application based on sinatra with other third party ruby gems as foundation.
+Originally, I wanted to name this project as Harmony or Melody, but because it was already taken I decided to name this project as Melodiest.
 
 ### Installation
 
@@ -36,13 +38,13 @@ melodiest -n my_app -d
 ### Melodiest::Application
 Because Melodiest is already required Sinatra, you don't have to require 'sinatra' anymore, just require 'melodiest'.
 
-`Melodiest::Application` is subclass from `Sinatra::Application` and by default is using configuration from `Melodiest::Setting.setup` method.
+`Melodiest::Application` is subclass from `Sinatra::Application`.
 
 ```ruby
 # my_app.rb
 
 class App < Melodiest::Application
-  setup 'this_is_secret_for_encrypted_cookie'
+  cookie_secret 'this_is_secret_for_encrypted_cookie'
   ...
 end
 ```
@@ -83,10 +85,6 @@ For complete example see [github.com/kuntoaji/todo_melodiest](https://github.com
   
   ```ruby
   class MyApp
-    get '/' do
-      "hello world!"
-    end
-
     get '/artists' do
       @artists = Artist.all
       erb :"artists/index"
@@ -122,11 +120,18 @@ For complete example see [github.com/kuntoaji/todo_melodiest](https://github.com
   10. run the server `bundle exec thin start`
   11. open url `localhost:3000/artists`
 
-### Default Configuration
+### List of Ruby Gems
 
+  * sinatra (required by default)
+  * sinatra-contrib (required by default)
+  * encrypted_cookie (required by default)
   * `Sinatra::Reloader` in development environment only
-  * `Thin` as default web server
+  * thin
   * `Rack::Session::EncryptedCookie`
   * `Rack::Csrf`
-  * `Sequel` ORM
-  * `sequel_pg` as PostgreSQL adapter
+  * sequel
+  * sequel_pg as PostgreSQL adapter
+  * sinatra-asset-pipeline
+  * uglifier
+  * tux for console
+  * `Sinatra::Cache` in production environment only

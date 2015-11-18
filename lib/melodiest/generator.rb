@@ -78,6 +78,7 @@ module Melodiest
       FileUtils.cp_r File.expand_path("../templates/app", __FILE__), @destination
 
       if @with_database
+        FileUtils.mkdir "#{@destination}/app/models"
         FileUtils.cp_r File.expand_path("../templates/db", __FILE__), @destination
       else
         FileUtils.rm "#{@destination}/config/database.yml.example"

@@ -128,7 +128,7 @@ describe Melodiest::Generator do
 
           expect(Dir.exists?("#{target_dir}/app")).to be_truthy
           expect(Dir.exists?("#{target_dir}/app/routes")).to be_truthy
-          expect(Dir.exists?("#{target_dir}/app/models")).to be_truthy
+          expect(Dir.exists?("#{target_dir}/app/models")).to be_falsey
           expect(Dir.exists?("#{target_dir}/app/views")).to be_truthy
           expect(File.exists?("#{target_dir}/app/views/layout.erb")).to be_truthy
           expect(File.exists?("#{target_dir}/app/views/home/index.erb")).to be_truthy

@@ -1,4 +1,4 @@
-development:
+1.0.0:
   * prevent tux to be required
   * add sinatra assets pipeline extension
   * restructure generated app

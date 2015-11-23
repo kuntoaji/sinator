@@ -3,14 +3,17 @@ require_relative '../../lib/melodiest/command'
 describe Melodiest::Command do
 
   describe "parse" do
-    before do
+    def remove_existing_app_if_exists
       FileUtils.rm_r "my_app" if Dir.exists?("my_app")
       FileUtils.rm_r "/tmp/my_app" if Dir.exists?("/tmp/my_app")
     end
 
+    before do
+      remove_existing_app_if_exists
+    end
+
     after :all do
-      FileUtils.rm_r "my_app" if Dir.exists?("my_app")
-      FileUtils.rm_r "/tmp/my_app" if Dir.exists?("/tmp/my_app")
+      remove_existing_app_if_exists
     end
 
     it "has --help option" do

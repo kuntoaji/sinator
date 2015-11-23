@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'melodiest', '0.4.0'
+gem 'melodiest', '1.0.0'
 gem 'thin'
 gem 'tux', require: false
 gem 'sinatra-asset-pipeline', require: 'sinatra/asset_pipeline'

@@ -41,16 +41,19 @@ describe Melodiest::Generator do
   end
 
   describe "#generate_gemfile" do
+    def expected_gemfile(generator, target_dir, expected_gemfile)
+      gemfile = "#{target_dir}/Gemfile"
+      generator.generate_gemfile
+
+      file_content = File.read(gemfile)
+      expect(File.exists?(gemfile)).to be_truthy
+      expect(file_content).to eq(expected_gemfile)
+    end
+
     context "without database" do
-      let(:gemfile) { "#{target_dir}/Gemfile" }
-
       it "should generate Gemfile without sequel" do
-        generator.generate_gemfile
-        file_content = File.read(gemfile)
         expected_file_content = File.read(File.expand_path("../../fixtures/without_db/gemfile.txt", __FILE__))
-
-        expect(File.exists?(gemfile)).to be_truthy
-        expect(file_content).to eq(expected_file_content)
+        expected_gemfile(generator, target_dir, expected_file_content)
       end
     end
 
@@ -58,12 +61,8 @@ describe Melodiest::Generator do
       let(:gemfile) { "#{target_dir_with_db}/Gemfile" }
 
       it "should generate Gemfile with sequel" do
-        generator_with_db.generate_gemfile
-        file_content = File.read(gemfile)
         expected_file_content = File.read(File.expand_path("../../fixtures/with_db/gemfile.txt", __FILE__))
-
-        expect(File.exists?(gemfile)).to be_truthy
-        expect(file_content).to eq(expected_file_content)
+        expected_gemfile(generator_with_db, target_dir_with_db, expected_file_content)
       end
     end
   end

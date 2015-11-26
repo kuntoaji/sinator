@@ -10,9 +10,7 @@ describe Melodiest::Generator do
     @dest = "/tmp/melodiest"
     @dest_with_db = "#{@dest}_with_db"
     @app = "my_app"
-  end
 
-  before :all do
     FileUtils.rm_r @dest if Dir.exists?(@dest)
     FileUtils.rm_r @dest_with_db if Dir.exists?(@dest_with_db)
   end
@@ -193,7 +191,6 @@ describe Melodiest::Generator do
 
   describe "#generate_rakefile" do
     it "generate basic Rakefile tasks" do
-      expected_rakefile_content =
       expected_rakefile_content = File.read(File.expand_path("../../fixtures/without_db/rakefile.txt", __FILE__))
 
       generator.generate_rakefile

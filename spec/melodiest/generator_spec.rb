@@ -1,6 +1,9 @@
 require_relative '../../lib/melodiest/generator'
+require_relative '../helpers/generator'
 
 describe Melodiest::Generator do
+  include Helper::Generator
+
   let(:generator) { Melodiest::Generator.new @app, destination: @dest }
   let(:generator_with_db) { Melodiest::Generator.new @app, destination: @dest_with_db, with_database: true }
   let(:target_dir) { "#{@dest}/#{@app}" }
@@ -39,15 +42,6 @@ describe Melodiest::Generator do
   end
 
   describe "#generate_gemfile" do
-    def expected_gemfile(generator, target_dir, expected_gemfile)
-      gemfile = "#{target_dir}/Gemfile"
-      generator.generate_gemfile
-
-      file_content = File.read(gemfile)
-      expect(File.exists?(gemfile)).to be_truthy
-      expect(file_content).to eq(expected_gemfile)
-    end
-
     context "without database" do
       it "should generate Gemfile without sequel" do
         expected_file_content = File.read(File.expand_path("../../fixtures/without_db/gemfile.txt", __FILE__))
@@ -56,8 +50,6 @@ describe Melodiest::Generator do
     end
 
     context "with database" do
-      let(:gemfile) { "#{target_dir_with_db}/Gemfile" }
-
       it "should generate Gemfile with sequel" do
         expected_file_content = File.read(File.expand_path("../../fixtures/with_db/gemfile.txt", __FILE__))
         expected_gemfile(generator_with_db, target_dir_with_db, expected_file_content)

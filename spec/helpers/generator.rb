@@ -1,12 +1,11 @@
 module Helper
   module Generator
-    def expected_gemfile(generator, target_dir, expected_gemfile)
-      gemfile = "#{target_dir}/Gemfile"
-      generator.generate_gemfile
+    def expect_file_eq(file, expected_file)
+      file_content = File.read(file)
+      expected_file_content = File.read(expected_file)
 
-      file_content = File.read(gemfile)
-      expect(File.exists?(gemfile)).to be_truthy
-      expect(file_content).to eq(expected_gemfile)
+      expect(File.exists?(file)).to be_truthy
+      expect(file_content).to eq(expected_file_content)
     end
 
     def expected_default_files(target_dir, expected_value)

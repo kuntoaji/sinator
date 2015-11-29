@@ -45,30 +45,33 @@ describe Melodiest::Generator do
 
   describe "#generate_gemfile" do
     context "without database" do
+      let(:gemfile) { "#{target_dir}/Gemfile" }
+      let(:expected_gemfile) { File.expand_path("../../fixtures/without_db/gemfile.txt", __FILE__) }
+
       it "should generate Gemfile without sequel" do
-        expected_file_content = File.read(File.expand_path("../../fixtures/without_db/gemfile.txt", __FILE__))
-        expected_gemfile(generator, target_dir, expected_file_content)
+        generator.generate_gemfile
+        expect_file_eq(gemfile, expected_gemfile)
       end
     end
 
     context "with database" do
+      let(:gemfile) { "#{target_dir_with_db}/Gemfile" }
+      let(:expected_gemfile) { File.expand_path("../../fixtures/with_db/gemfile.txt", __FILE__) }
+
       it "should generate Gemfile with sequel" do
-        expected_file_content = File.read(File.expand_path("../../fixtures/with_db/gemfile.txt", __FILE__))
-        expected_gemfile(generator_with_db, target_dir_with_db, expected_file_content)
+        generator_with_db.generate_gemfile
+        expect_file_eq(gemfile, expected_gemfile)
       end
     end
   end
 
   describe "#generate_bundle_config" do
     let(:bundle_config) { "#{target_dir}/config.ru" }
+    let(:expected_bundle_config) { File.expand_path("../../fixtures/config_ru.txt", __FILE__) }
 
     it "should generate config.ru with correct content" do
       generator.generate_bundle_config
-      file_content = File.read(bundle_config)
-      expected_file_content = File.read(File.expand_path("../../fixtures/config_ru.txt", __FILE__))
-
-      expect(File.exists?(bundle_config)).to be_truthy
-      expect(file_content).to eq(expected_file_content)
+      expect_file_eq(bundle_config, expected_bundle_config)
     end
   end
 

@@ -9,7 +9,7 @@ describe Melodiest::Generator do
   let(:target_dir) { "#{@dest}/#{@app}" }
   let(:target_dir_with_db) { "#{@dest_with_db}/#{@app}" }
 
-  before :all do
+  before do
     @dest = "/tmp/melodiest"
     @dest_with_db = "#{@dest}_with_db"
     @app = "my_app"
@@ -18,9 +18,9 @@ describe Melodiest::Generator do
     FileUtils.rm_r @dest_with_db if Dir.exists?(@dest_with_db)
   end
 
-  after :all do
-    FileUtils.rm_r @dest
-    FileUtils.rm_r @dest_with_db
+  after do
+    FileUtils.rm_r @dest if Dir.exists?(@dest)
+    FileUtils.rm_r @dest_with_db if Dir.exists?(@dest_with_db)
   end
 
   it "sets app_name" do
@@ -32,15 +32,11 @@ describe Melodiest::Generator do
   end
 
   it "has default destination path app_name" do
-    FileUtils.rm_r @app if Dir.exists?(@app)
     expect(Melodiest::Generator.new(@app).destination).to eq File.expand_path(@app)
-    FileUtils.rm_r @app
   end
 
   it "sets new destination path even if it's not exist yet" do
-    FileUtils.rm_r @dest if Dir.exists?(@dest)
     expect(Melodiest::Generator.new(@dest).destination).to eq File.expand_path(@dest)
-    FileUtils.rm_r @dest
   end
 
   describe "#generate_gemfile" do
@@ -76,9 +72,6 @@ describe Melodiest::Generator do
   end
 
   describe "#generate_app" do
-    before { FileUtils.rm_r @dest if Dir.exists?(@dest) }
-    before { FileUtils.rm_r @dest_with_db if Dir.exists?(@dest_with_db) }
-
     it "generates home route" do
       generator.generate_app
 

@@ -32,7 +32,9 @@ describe Melodiest::Generator do
   end
 
   it "has default destination path app_name" do
+    FileUtils.rm_r @app if Dir.exists?(@app)
     expect(Melodiest::Generator.new(@app).destination).to eq File.expand_path(@app)
+    FileUtils.rm_r @app if Dir.exists?(@app)
   end
 
   it "sets new destination path even if it's not exist yet" do
@@ -75,14 +77,13 @@ describe Melodiest::Generator do
     it "generates home route" do
       generator.generate_app
 
-      app_file = "#{target_dir}/app/routes/home.rb"
       erb_file = "#{target_dir}/app/routes/home.erb"
-      file_content = File.read(app_file)
-      expected_file_content = File.read(File.expand_path("../../fixtures/app_routes_home.txt", __FILE__))
+      generated_file = "#{target_dir}/app/routes/home.rb"
+      expected_file = File.expand_path("../../fixtures/app_routes_home.txt", __FILE__)
 
-      expect(File.exists?(app_file)).to be_truthy
       expect(File.exists?(erb_file)).to be_falsey
-      expect(file_content).to eq expected_file_content
+      expect(File.exists?(generated_file)).to be_truthy
+      expect_file_eq(generated_file, expected_file)
     end
 
     context "when generating without database" do
@@ -105,12 +106,10 @@ describe Melodiest::Generator do
         it "generates <app_name>.rb, public dir, and app dir" do
           generator.generate_app
 
-          app_file = "#{target_dir}/my_app.rb"
-          file_content = File.read(app_file)
-          expected_file_content = File.read(File.expand_path("../../fixtures/without_db/app.txt", __FILE__))
+          generated_file = "#{target_dir}/my_app.rb"
+          expected_file = File.expand_path("../../fixtures/without_db/app.txt", __FILE__)
 
-          expect(File.exists?(app_file)).to be_truthy
-          expect(file_content).to eq expected_file_content
+          expect_file_eq(generated_file, expected_file)
         end
       end
     end
@@ -135,11 +134,10 @@ describe Melodiest::Generator do
         it "has sequel database connector" do
           generator_with_db.generate_app
 
-          app_file = "#{target_dir_with_db}/my_app.rb"
-          file_content = File.read(app_file)
-          expected_file_content = File.read(File.expand_path("../../fixtures/with_db/app.txt", __FILE__))
+          generated_file = "#{target_dir_with_db}/my_app.rb"
+          expected_file = File.expand_path("../../fixtures/with_db/app.txt", __FILE__)
 
-          expect(file_content).to eq expected_file_content
+          expect_file_eq(generated_file, expected_file)
         end
       end
     end
@@ -147,24 +145,22 @@ describe Melodiest::Generator do
 
   describe "#generate_rakefile" do
     it "generate basic Rakefile tasks" do
-      expected_rakefile_content = File.read(File.expand_path("../../fixtures/without_db/rakefile.txt", __FILE__))
-
       generator.generate_rakefile
-      rakefile = "#{target_dir}/Rakefile"
-      rakefile_content = File.read(rakefile)
 
-      expect(rakefile_content).to eq expected_rakefile_content
+      generated_file = "#{target_dir}/Rakefile"
+      expected_file = File.expand_path("../../fixtures/without_db/rakefile.txt", __FILE__)
+
+      expect_file_eq(generated_file, expected_file)
     end
 
     context "with database" do
       it "generates db related tasks" do
-        expected_rakefile_content = File.read(File.expand_path("../../fixtures/with_db/rakefile.txt", __FILE__))
-
         generator_with_db.generate_rakefile
-        rakefile = "#{target_dir_with_db}/Rakefile"
-        rakefile_content = File.read(rakefile)
 
-        expect(rakefile_content).to eq expected_rakefile_content
+        generated_file = "#{target_dir_with_db}/Rakefile"
+        expected_file = File.expand_path("../../fixtures/with_db/rakefile.txt", __FILE__)
+
+        expect_file_eq(generated_file, expected_file)
       end
     end
   end

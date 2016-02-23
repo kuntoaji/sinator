@@ -1,4 +1,4 @@
-Copyright (c) 2015 kuntoaji
+Copyright (c) 2015-2016 Kunto Aji Kristianto
 
 MIT License
 

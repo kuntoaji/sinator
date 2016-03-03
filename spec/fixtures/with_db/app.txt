@@ -1,7 +1,8 @@
 require 'yaml'
 
-class MyApp < Melodiest::Application
-  cookie_secret 'supersecretcookiefromgenerator'
+class MyApp < Sinatra::Application
+  use Rack::Session::EncryptedCookie,
+    secret: 'supersecretcookiefromgenerator'
 
   set :app_file, __FILE__
   set :views, Proc.new { File.join(root, "app/views") }
@@ -19,8 +20,10 @@ class MyApp < Melodiest::Application
   end
 
   configure :development do
+    require 'sinatra/reloader'
     require 'logger'
 
+    register Sinatra::Reloader
     Sequel.connect YAML.load_file(File.expand_path("../config/database.yml", __FILE__))['development'],
       loggers: [Logger.new($stdout)]
   end

@@ -1,6 +1,7 @@
 <%= "require 'yaml'\n\n" if @with_database -%>
-class <%= @app_class_name %> < Melodiest::Application
-  cookie_secret '<%= SecureRandom.hex 32 %>'
+class <%= @app_class_name %> < Sinatra::Application
+  use Rack::Session::EncryptedCookie,
+    secret: '<%= SecureRandom.hex 32 %>'
 
   set :app_file, __FILE__
   set :views, Proc.new { File.join(root, "app/views") }
@@ -19,8 +20,10 @@ class <%= @app_class_name %> < Melodiest::Application
   end
 
   configure :development do
+    require 'sinatra/reloader'
     require 'logger'
 
+    register Sinatra::Reloader
     Sequel.connect YAML.load_file(File.expand_path("../config/database.yml", __FILE__))['development'],
       loggers: [Logger.new($stdout)]
   end
@@ -41,7 +44,7 @@ class <%= @app_class_name %> < Melodiest::Application
   end
 <% else -%>
   configure do
-    # Load up database and such
+    # do something
   end
 <% end -%>
 end

@@ -1,5 +1,6 @@
-class MyApp < Melodiest::Application
-  cookie_secret 'supersecretcookiefromgenerator'
+class MyApp < Sinatra::Application
+  use Rack::Session::EncryptedCookie,
+    secret: 'supersecretcookiefromgenerator'
 
   set :app_file, __FILE__
   set :views, Proc.new { File.join(root, "app/views") }
@@ -10,6 +11,6 @@ class MyApp < Melodiest::Application
   use Rack::Csrf, raise: true
 
   configure do
-    # Load up database and such
+    # do something
   end
 end

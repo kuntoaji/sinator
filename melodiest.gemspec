@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.summary     = "Sinatra application boilerplate generator"
   s.description = "Melodiest provides generator and contains minimal configuration to develop application with Sinatra"
   s.author      = 'Kunto Aji Kristianto'
-  s.email       = 'kunto.aji.kr@slackware-id.org'
+  s.email       = 'kuntoaji@kaklabs.com'
   s.files       = `git ls-files -z`.split("\x0")
   s.executables << 'melodiest'
   s.homepage    = 'http://github.com/kuntoaji/melodiest'
@@ -16,8 +16,4 @@ Gem::Specification.new do |s|
   s.required_ruby_version = '>= 2.1'
   s.add_development_dependency 'bundler', '~> 1.7'
   s.add_development_dependency 'rspec', '3.2.0'
-  s.add_development_dependency 'rack-test', '0.6.3'
-  s.add_runtime_dependency 'sinatra', '1.4.6'
-  s.add_runtime_dependency 'sinatra-contrib', '1.4.2'
-  s.add_runtime_dependency 'encrypted_cookie', '0.0.4'
 end

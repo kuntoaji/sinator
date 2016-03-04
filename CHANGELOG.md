@@ -1,3 +1,9 @@
+2.0.1:
+  * prevent sinatra-contrib to be required on Gemfile. Sinatra contrib is interfering with Rake’s own namespace support
+
+2.0.0:
+  * remove Melodiest::Application, only focus on application boilerplate
+
 1.0.0:
   * prevent tux to be required
   * add sinatra assets pipeline extension
@@ -28,7 +34,7 @@
 
   * add sinatra application boilerplate generator
   * add melodiest command to run generator
- 
+
 0.1.x:
 
  * add http authorization module

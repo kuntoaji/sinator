@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    melodiest (1.0.0)
+    melodiest (2.0.1)
 
 GEM
   remote: https://rubygems.org/
@@ -28,3 +28,6 @@ DEPENDENCIES
   bundler (~> 1.7)
   melodiest!
   rspec (= 3.2.0)
+
+BUNDLED WITH
+   1.15.3

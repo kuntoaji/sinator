@@ -4,13 +4,16 @@ class MyApp < Sinatra::Application
 
   set :app_file, __FILE__
   set :views, Proc.new { File.join(root, "app/views") }
-  set :assets_css_compressor, :sass
-  set :assets_js_compressor, :uglifier
-
-  register Sinatra::AssetPipeline
+  set :assets, Sprockets::Environment.new
   use Rack::Csrf, raise: true
 
   configure do
-    # do something
+    assets.append_path 'assets/stylesheets'
+    assets.append_path 'assets/javascripts'
+  end
+
+  configure :production do
+    assets.js_compressor  = :uglify
+    assets.css_compressor = :sass
   end
 end

@@ -1,8 +1,5 @@
 require_relative 'config/boot'
 require_relative '<%= @app_name %>'
-require 'sinatra/asset_pipeline/task'
-
-Sinatra::AssetPipeline::Task.define! <%= @app_class_name %>
 <% if @with_database %>
 namespace :db do
   desc "Run migrations"
@@ -20,4 +17,4 @@ namespace :db do
     end
   end
 end
-<% end -%>
+<% end %>

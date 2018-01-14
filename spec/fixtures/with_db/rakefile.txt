@@ -1,8 +1,5 @@
 require_relative 'config/boot'
 require_relative 'my_app'
-require 'sinatra/asset_pipeline/task'
-
-Sinatra::AssetPipeline::Task.define! MyApp
 
 namespace :db do
   desc "Run migrations"

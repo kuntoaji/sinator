@@ -6,10 +6,7 @@ class MyApp < Sinatra::Application
 
   set :app_file, __FILE__
   set :views, Proc.new { File.join(root, "app/views") }
-  set :assets_css_compressor, :sass
-  set :assets_js_compressor, :uglifier
-
-  register Sinatra::AssetPipeline
+  set :assets, Sprockets::Environment.new
   use Rack::Csrf, raise: true
 
   configure do
@@ -26,6 +23,9 @@ class MyApp < Sinatra::Application
     register Sinatra::Reloader
     Sequel.connect YAML.load_file(File.expand_path("../config/database.yml", __FILE__))['development'],
       loggers: [Logger.new($stdout)]
+
+    assets.append_path 'assets/stylesheets'
+    assets.append_path 'assets/javascripts'
   end
 
   configure :test do
@@ -33,13 +33,8 @@ class MyApp < Sinatra::Application
   end
 
   configure :production do
-    # Serve assets via Nginx or Apache
-    disable :static
-
-    register Sinatra::Cache
-    set :cache_enabled, true
-    set :cache_output_dir, Proc.new { File.join(root, "public/cache") }
-
+    assets.js_compressor  = :uglify
+    assets.css_compressor = :sass
     Sequel.connect YAML.load_file(File.expand_path("../config/database.yml", __FILE__))['production']
   end
 end

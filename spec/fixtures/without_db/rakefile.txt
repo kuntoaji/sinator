@@ -1,5 +1,2 @@
 require_relative 'config/boot'
 require_relative 'my_app'
-require 'sinatra/asset_pipeline/task'
-
-Sinatra::AssetPipeline::Task.define! MyApp

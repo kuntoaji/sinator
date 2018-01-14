@@ -14,6 +14,11 @@ class MyApp < Sinatra::Application
     Sequel::Model.plugin :timestamps
     Sequel::Model.plugin :auto_validations,
       not_null: :presence, unique_opts: { only_if_modified: true }
+
+    get '/assets/*' do
+      env['PATH_INFO'].sub!('/assets', '')
+      settings.assets.call(env)
+    end
   end
 
   configure :development do

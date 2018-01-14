@@ -10,6 +10,11 @@ class MyApp < Sinatra::Application
   configure do
     assets.append_path 'assets/stylesheets'
     assets.append_path 'assets/javascripts'
+
+    get '/assets/*' do
+      env['PATH_INFO'].sub!('/assets', '')
+      settings.assets.call(env)
+    end
   end
 
   configure :production do

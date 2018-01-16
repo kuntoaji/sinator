@@ -1,3 +1,10 @@
+master:
+  * set explicit version to all required ruby gems
+  * replace sinatra-asset-pipeline with sprockets
+  * generate database.yml instead of database.yml.example
+  * add rake tasks to perform assets:precompile and assets:clean
+  * replace RACK_ENV with APP_ENV
+
 2.0.1:
   * prevent sinatra-contrib to be required on Gemfile. Sinatra contrib is interfering with Rake’s own namespace support
 
@@ -23,7 +30,6 @@
   * when has no option, melodiest command will use --help option
 
 0.3.0:
-
   * remove Melodiest::Auth::Http module, it's better to use sinatra-authorization extension
   * refactor Melodiest::Setting.setup so that it can be overridden via app and remove thin as dependency
   * add generator for sequel orm and postgres sql
@@ -31,11 +37,9 @@
   * add generator for Rack::Csrf
 
 0.2.x:
-
   * add sinatra application boilerplate generator
   * add melodiest command to run generator
 
 0.1.x:
-
  * add http authorization module
  * set thin as server

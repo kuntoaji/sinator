@@ -6,6 +6,7 @@ class <%= @app_class_name %> < Sinatra::Application
   set :app_file, __FILE__
   set :views, Proc.new { File.join(root, "app/views") }
   set :assets, Sprockets::Environment.new
+  set :assets_manifest, %w(app.js app.css)
   use Rack::Csrf, raise: true
 
 <% if @with_database -%>
@@ -15,10 +16,8 @@ class <%= @app_class_name %> < Sinatra::Application
     Sequel::Model.plugin :auto_validations,
       not_null: :presence, unique_opts: { only_if_modified: true }
 
-    get '/assets/*' do
-      env['PATH_INFO'].sub!('/assets', '')
-      settings.assets.call(env)
-    end
+    assets.append_path 'assets/stylesheets'
+    assets.append_path 'assets/javascripts'
   end
 
   configure :development do
@@ -29,8 +28,10 @@ class <%= @app_class_name %> < Sinatra::Application
     Sequel.connect YAML.load_file(File.expand_path("../config/database.yml", __FILE__))['development'],
       loggers: [Logger.new($stdout)]
 
-    assets.append_path 'assets/stylesheets'
-    assets.append_path 'assets/javascripts'
+    get '/assets/*' do
+      env['PATH_INFO'].sub!('/assets', '')
+      settings.assets.call(env)
+    end
   end
 
   configure :test do
@@ -38,6 +39,9 @@ class <%= @app_class_name %> < Sinatra::Application
   end
 
   configure :production do
+    # Serve assets via Nginx or Apache
+    disable :static
+
     assets.js_compressor  = :uglify
     assets.css_compressor = :sass
     Sequel.connect YAML.load_file(File.expand_path("../config/database.yml", __FILE__))['production']
@@ -46,7 +50,9 @@ class <%= @app_class_name %> < Sinatra::Application
   configure do
     assets.append_path 'assets/stylesheets'
     assets.append_path 'assets/javascripts'
+  end
 
+  configure :development do
     get '/assets/*' do
       env['PATH_INFO'].sub!('/assets', '')
       settings.assets.call(env)
@@ -54,6 +60,9 @@ class <%= @app_class_name %> < Sinatra::Application
   end
 
   configure :production do
+    # Serve assets via Nginx or Apache
+    disable :static
+
     assets.js_compressor  = :uglify
     assets.css_compressor = :sass
   end

@@ -1,5 +1,18 @@
 require_relative 'config/boot'
 require_relative '<%= @app_name %>'
+
+namespace :assets do
+  desc "Precompile assets"
+  task :precompile do
+    manifest = ::Sprockets::Manifest.new(<%= @app_class_name %>.assets.index, "#{<%= @app_class_name %>.public_folder}/assets")
+    manifest.compile(<%= @app_class_name %>.assets_manifest)
+  end
+
+  desc "Clean assets"
+  task :clean do
+    FileUtils.rm_rf("#{<%= @app_class_name %>.public_folder}/assets")
+  end
+end
 <% if @with_database %>
 namespace :db do
   desc "Run migrations"

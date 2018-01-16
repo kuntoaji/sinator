@@ -38,7 +38,7 @@ module Helper
       sample_migration = "#{target_dir}/db/migrations/000_example.rb"
 
       expect(Dir.exists?("#{target_dir}/app/models")).to eq(expected_value)
-      expect(File.exists?("#{target_dir}/config/database.yml.example")).to eq(expected_value)
+      expect(File.exists?("#{target_dir}/config/database.yml")).to eq(expected_value)
       expect(File.exists?(sample_migration)).to eq(expected_value)
     end
 

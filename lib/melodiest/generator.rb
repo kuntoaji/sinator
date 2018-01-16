@@ -81,7 +81,7 @@ module Melodiest
         FileUtils.mkdir "#{@destination}/app/models"
         FileUtils.cp_r File.expand_path("../templates/db", __FILE__), @destination
       else
-        FileUtils.rm "#{@destination}/config/database.yml.example"
+        FileUtils.rm "#{@destination}/config/database.yml"
       end
     end
   end

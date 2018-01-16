@@ -1,0 +1,8 @@
+# http://sequel.jeremyevans.net/rdoc/files/doc/opening_databases_rdoc.html
+#
+development:
+  adapter: postgres
+  host: localhost
+  database: exampledb_development
+  username: exampleuser
+  password: examplepwd

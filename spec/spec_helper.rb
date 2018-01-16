@@ -1,4 +1,4 @@
-ENV['RACK_ENV'] = 'test'
+ENV['APP_ENV'] = 'test'
 require_relative '../lib/melodiest'
 
 RSpec.configure do |config|

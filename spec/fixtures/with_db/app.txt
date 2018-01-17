@@ -5,6 +5,7 @@ class MyApp < Sinatra::Application
     secret: 'supersecretcookiefromgenerator'
 
   set :app_file, __FILE__
+  set :server, :puma
   set :views, Proc.new { File.join(root, "app/views") }
   set :assets, Sprockets::Environment.new
   set :assets_manifest, %w(app.js app.css)

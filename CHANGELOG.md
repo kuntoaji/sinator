@@ -4,6 +4,7 @@ master:
   * generate database.yml instead of database.yml.example
   * add rake tasks to perform assets:precompile and assets:clean
   * replace RACK_ENV with APP_ENV
+  * replace Thin web server with Puma web server
 
 2.0.1:
   * prevent sinatra-contrib to be required on Gemfile. Sinatra contrib is interfering with Rake’s own namespace support

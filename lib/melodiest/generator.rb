@@ -49,6 +49,21 @@ module Melodiest
       end
     end
 
+    def generate_puma_config
+      puma_development = File.read File.expand_path("../templates/config/puma/development.erb", __FILE__)
+      puma_production = File.read File.expand_path("../templates/config/puma/production.erb", __FILE__)
+
+      erb = ERB.new puma_development, 0, '-'
+      File.open "#{@destination}/config/puma/development.rb", "w" do |f|
+        f.write erb.result(binding)
+      end
+
+      erb = ERB.new puma_production, 0, '-'
+      File.open "#{@destination}/config/puma/production.rb", "w" do |f|
+        f.write erb.result(binding)
+      end
+    end
+
     # https://github.com/sinatra/sinatra-book/blob/master/book/Organizing_your_application.markdown
     def generate_app
       copy_templates
@@ -76,6 +91,8 @@ module Melodiest
       FileUtils.cp_r File.expand_path("../templates/config", __FILE__), @destination
       FileUtils.cp_r File.expand_path("../templates/public", __FILE__), @destination
       FileUtils.cp_r File.expand_path("../templates/app", __FILE__), @destination
+      FileUtils.rm "#{@destination}/config/puma/development.erb"
+      FileUtils.rm "#{@destination}/config/puma/production.erb"
 
       if @with_database
         FileUtils.mkdir "#{@destination}/app/models"

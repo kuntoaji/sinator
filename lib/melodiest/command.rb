@@ -45,10 +45,11 @@ module Melodiest
       generator = Melodiest::Generator.new args[:name],
         destination: args[:target], with_database: args[:database]
 
+      generator.generate_app
       generator.generate_rakefile
       generator.generate_gemfile
       generator.generate_bundle_config
-      generator.generate_app
+      generator.generate_puma_config
 
       msg = "#{args[:name]} is successfully generated"
       msg << " in #{args[:target]}" if args[:target]

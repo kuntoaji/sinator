@@ -73,6 +73,22 @@ describe Melodiest::Generator do
     end
   end
 
+  describe "#generate_puma_config" do
+    it "should generate puma config with correct content" do
+      FileUtils.mkdir_p("#{target_dir}/config/puma")
+
+      generator.generate_puma_config
+
+      puma_development = "#{target_dir}/config/puma/development.rb"
+      puma_production = "#{target_dir}/config/puma/production.rb"
+      expected_puma_development = File.expand_path("../../fixtures/config/puma/development.txt", __FILE__)
+      expected_puma_production = File.expand_path("../../fixtures/config/puma/production.txt", __FILE__)
+
+      expect_file_eq(puma_development, expected_puma_development)
+      expect_file_eq(puma_production, expected_puma_production)
+    end
+  end
+
   describe "#generate_app" do
     it "generates home route" do
       generator.generate_app

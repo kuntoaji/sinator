@@ -1,0 +1,7 @@
+threads 4, 4
+workers 2
+preload_app!
+
+before_fork do
+  <%= @app_class_name %>::DB.disconnect if defined?(<%= @app_class_name %>::DB)
+end

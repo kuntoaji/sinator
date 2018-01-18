@@ -1,4 +1,4 @@
-ENV['APP_ENV'] = 'test'
+ENV['RACK_ENV'] = 'test'
 require_relative '../lib/sinator'
 
 RSpec.configure do |config|

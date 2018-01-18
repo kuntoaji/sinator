@@ -1,8 +1,11 @@
 # Background
 
-Melodiest is [Sinatra](http://www.sinatrarb.com/) application boilerplate. It provides generator and contains minimum configuration to develop application with Sinatra.
-The reason why I create Melodiest is because I want to create many small web application based on sinatra with other third party ruby gems as foundation.
-Originally, I wanted to name this project as Harmony or Melody, but because it was already taken I decided to name this project as Melodiest.
+Melodiest is [Sinatra](http://www.sinatrarb.com/) application boilerplate. It provides generator and contains minimum configuration to develop web application with Sinatra.
+The reasons behind this project because I want to create many small web application based on sinatra with other third party ruby gems as foundation.
+
+# Features
+* Generate Sinatra based web application without database
+* Generate Sinatra based web application with PostgreSQL database configuration and Sequel as ORM
 
 ### Installation
 
@@ -29,7 +32,7 @@ generate app in target directory without database
 melodiest -n my_app -t target/dir
 ```
 
-generate app in current directory with database. `-d` option will generate app with `Sequel` orm and PostgreSQL adapter.
+generate app in current directory with database. `-d` option will generate app with `Sequel` ORM and PostgreSQL adapter.
 
 ```
 melodiest -n my_app -d
@@ -41,7 +44,7 @@ For complete example see [github.com/kuntoaji/todo_melodiest](https://github.com
   1. run `melodiest -n my_app -d`
   2. cd `my_app`
   3. run `bundle install`
-  4. create `config/database.yml` and configure your database setting
+  4. configure your database setting in `config/database.yml`
   5. create file `db/migrations/001_create_artists.rb` and put the following code:
 
   ```ruby
@@ -103,7 +106,7 @@ For complete example see [github.com/kuntoaji/todo_melodiest](https://github.com
   </form>
   ```
 
-  10. run the server `bundle exec thin start`
+  10. run the server `bundle exec puma`
   11. open url `localhost:3000/artists`
 
 ### List of Ruby Gems
@@ -112,12 +115,12 @@ For complete example see [github.com/kuntoaji/todo_melodiest](https://github.com
   * sinatra-contrib
   * encrypted_cookie
   * `Sinatra::Reloader` in development environment only
-  * thin
+  * puma
   * `Rack::Session::EncryptedCookie`
   * `Rack::Csrf`
   * sequel
   * sequel_pg as PostgreSQL adapter
-  * sinatra-asset-pipeline
+  * sprockets
+  * sass
   * uglifier
   * tux for console
-  * `Sinatra::Cache` in production environment only

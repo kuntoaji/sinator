@@ -107,7 +107,7 @@ For complete example see [github.com/kuntoaji/todo_sinator](https://github.com/k
   ```
 
   10. run the server `bundle exec puma`
-  11. open url `localhost:3000/artists`
+  11. open url `localhost:9292/artists`
 
 ### List of Ruby Gems
 

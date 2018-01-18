@@ -1,4 +1,4 @@
-master:
+3.0.0:
   * set explicit version to all required ruby gems
   * replace sinatra-asset-pipeline with sprockets
   * generate database.yml instead of database.yml.example

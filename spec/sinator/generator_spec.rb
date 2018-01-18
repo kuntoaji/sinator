@@ -1,16 +1,16 @@
-require_relative '../../lib/melodiest/generator'
+require_relative '../../lib/sinator/generator'
 require_relative '../helpers/generator'
 
-describe Melodiest::Generator do
+describe Sinator::Generator do
   include Helper::Generator
 
-  let(:generator) { Melodiest::Generator.new @app, destination: @dest }
-  let(:generator_with_db) { Melodiest::Generator.new @app, destination: @dest_with_db, with_database: true }
+  let(:generator) { Sinator::Generator.new @app, destination: @dest }
+  let(:generator_with_db) { Sinator::Generator.new @app, destination: @dest_with_db, with_database: true }
   let(:target_dir) { "#{@dest}/#{@app}" }
   let(:target_dir_with_db) { "#{@dest_with_db}/#{@app}" }
 
   before do
-    @dest = "/tmp/melodiest"
+    @dest = "/tmp/sinator"
     @dest_with_db = "#{@dest}_with_db"
     @app = "my_app"
 
@@ -33,12 +33,12 @@ describe Melodiest::Generator do
 
   it "has default destination path app_name" do
     FileUtils.rm_r @app if Dir.exists?(@app)
-    expect(Melodiest::Generator.new(@app).destination).to eq File.expand_path(@app)
+    expect(Sinator::Generator.new(@app).destination).to eq File.expand_path(@app)
     FileUtils.rm_r @app if Dir.exists?(@app)
   end
 
   it "sets new destination path even if it's not exist yet" do
-    expect(Melodiest::Generator.new(@dest).destination).to eq File.expand_path(@dest)
+    expect(Sinator::Generator.new(@dest).destination).to eq File.expand_path(@dest)
   end
 
   describe "#generate_gemfile" do
@@ -104,7 +104,7 @@ describe Melodiest::Generator do
 
     context "when generating without database" do
       describe "copy_templates" do
-        it "copies from melodiest templates" do
+        it "copies from sinator templates" do
           expected_default_files(target_dir, false)
           expected_generated_files_with_db(target_dir, false)
 
@@ -132,7 +132,7 @@ describe Melodiest::Generator do
 
     context "when generating with database" do
       describe "copy templates" do
-        it "copies from melodiest templates" do
+        it "copies from sinator templates" do
           expected_default_files(target_dir_with_db, false)
           expected_generated_files_with_db(target_dir_with_db, false)
 

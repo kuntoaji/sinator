@@ -1,3 +1,3 @@
-module Melodiest
+module Sinator
   VERSION = '2.0.1'
 end

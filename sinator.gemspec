@@ -1,16 +1,16 @@
-require_relative 'lib/melodiest/version'
+require_relative 'lib/sinator/version'
 
 Gem::Specification.new do |s|
-  s.name        = 'melodiest'
-  s.version     = Melodiest::VERSION
+  s.name        = 'sinator'
+  s.version     = Sinator::VERSION
   s.date        = Date.today.to_s
   s.summary     = "Sinatra application boilerplate generator"
-  s.description = "Melodiest provides generator and contains minimal configuration to develop application with Sinatra"
+  s.description = "Sinator provides generator and contains minimal configuration to develop application with Sinatra"
   s.author      = 'Kunto Aji Kristianto'
   s.email       = 'kuntoaji@kaklabs.com'
   s.files       = `git ls-files -z`.split("\x0")
-  s.executables << 'melodiest'
-  s.homepage    = 'http://github.com/kuntoaji/melodiest'
+  s.executables << 'sinator'
+  s.homepage    = 'http://github.com/kuntoaji/sinator'
   s.license     = 'MIT'
 
   s.required_ruby_version = '>= 2.1'

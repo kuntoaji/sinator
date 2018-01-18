@@ -1,5 +1,5 @@
 require File.expand_path('../config/boot.rb', __FILE__)
-require Sinator::ROOT + '/my_app'
+require Sinator::ROOT + '/<%= @app_name %>'
 require Sinator::ROOT + '/config/application'
 
-run MyApp
+run <%= @app_class_name %>

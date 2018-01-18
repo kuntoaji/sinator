@@ -5,6 +5,6 @@ require 'bundler'
 
 Bundler.require :default, ENV['APP_ENV'].to_sym
 
-module Melodiest
+module Sinator
   ROOT = File.expand_path('../../', __FILE__)
 end

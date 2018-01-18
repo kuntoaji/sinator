@@ -3,7 +3,7 @@ require 'securerandom'
 require 'erb'
 require_relative 'version'
 
-module Melodiest
+module Sinator
 
   class Generator
     attr_accessor :destination, :app_name, :app_class_name

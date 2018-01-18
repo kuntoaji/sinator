@@ -1,7 +1,7 @@
 require 'optparse'
 require_relative 'generator'
 
-module Melodiest
+module Sinator
 
   class Command
     def self.parse(options)
@@ -10,14 +10,14 @@ module Melodiest
       result = nil
 
       option_parser = OptionParser.new do |opts|
-        opts.banner = "Usage: melodiest [options]"
+        opts.banner = "Usage: sinator [options]"
 
         opts.on("-h", "--help", "Print this help") do
           result = opts.to_s
         end
 
         opts.on("-v", "--version", "Show version") do
-          result = Melodiest::VERSION
+          result = Sinator::VERSION
         end
 
         opts.on("-nNAME", "--name=NAME", "generate app with name from this option") do |name|
@@ -42,7 +42,7 @@ module Melodiest
     end
 
     def self.run(args)
-      generator = Melodiest::Generator.new args[:name],
+      generator = Sinator::Generator.new args[:name],
         destination: args[:target], with_database: args[:database]
 
       generator.generate_app

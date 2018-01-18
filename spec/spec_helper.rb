@@ -1,5 +1,5 @@
 ENV['APP_ENV'] = 'test'
-require_relative '../lib/melodiest'
+require_relative '../lib/sinator'
 
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|

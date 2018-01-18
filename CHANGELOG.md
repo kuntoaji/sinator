@@ -5,6 +5,7 @@ master:
   * add rake tasks to perform assets:precompile and assets:clean
   * replace RACK_ENV with APP_ENV
   * replace Thin web server with Puma web server
+  * rename project to Sinator
 
 2.0.1:
   * prevent sinatra-contrib to be required on Gemfile. Sinatra contrib is interfering with Rake’s own namespace support

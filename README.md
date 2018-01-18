@@ -1,6 +1,6 @@
 # Background
 
-Melodiest is [Sinatra](http://www.sinatrarb.com/) application boilerplate. It provides generator and contains minimum configuration to develop web application with Sinatra.
+Sinator is [Sinatra](http://www.sinatrarb.com/) application boilerplate. It provides generator and contains minimum configuration to develop web application with Sinatra.
 The reasons behind this project because I want to create many small web application based on sinatra with other third party ruby gems as foundation.
 
 # Features
@@ -10,38 +10,38 @@ The reasons behind this project because I want to create many small web applicat
 ### Installation
 
 ```ruby
-gem install melodiest
+gem install sinator
 ```
 
 with Bundler, put this code in your Gemfile:
 
 ```ruby
-gem 'melodiest'
+gem 'sinator'
 ```
 
 ### How to Use
 generate app in current directory without database
 
 ```
-melodiest -n my_app
+sinator -n my_app
 ```
 
 generate app in target directory without database
 
 ```
-melodiest -n my_app -t target/dir
+sinator -n my_app -t target/dir
 ```
 
 generate app in current directory with database. `-d` option will generate app with `Sequel` ORM and PostgreSQL adapter.
 
 ```
-melodiest -n my_app -d
+sinator -n my_app -d
 ```
 
 ### Example Usage
 This example assume that PostgreSQL is already running and desired database is already exist.
-For complete example see [github.com/kuntoaji/todo_melodiest](https://github.com/kuntoaji/todo_melodiest)
-  1. run `melodiest -n my_app -d`
+For complete example see [github.com/kuntoaji/todo_sinator](https://github.com/kuntoaji/todo_sinator)
+  1. run `sinator -n my_app -d`
   2. cd `my_app`
   3. run `bundle install`
   4. configure your database setting in `config/database.yml`

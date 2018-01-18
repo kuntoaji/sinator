@@ -3,7 +3,6 @@ master:
   * replace sinatra-asset-pipeline with sprockets
   * generate database.yml instead of database.yml.example
   * add rake tasks to perform assets:precompile and assets:clean
-  * replace RACK_ENV with APP_ENV
   * replace Thin web server with Puma web server
   * rename project to Sinator
 

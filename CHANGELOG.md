@@ -1,3 +1,6 @@
+3.0.2:
+  * replace APP_ENV with RACK_ENV
+
 3.0.1:
   * update gems
 

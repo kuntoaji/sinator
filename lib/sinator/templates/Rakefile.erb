@@ -18,7 +18,7 @@ namespace :db do
   desc "Run migrations"
   task :migrate, [:version] do |t, args|
     Sequel.extension :migration
-    db = Sequel.connect(YAML.load_file("#{Sinator::ROOT}/config/database.yml")[ENV['APP_ENV']])
+    db = Sequel.connect(YAML.load_file("#{Sinator::ROOT}/config/database.yml")[ENV['RACK_ENV']])
     migration_path = "#{Sinator::ROOT}/db/migrations"
 
     if args[:version]

@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    sinator (3.0.0)
+    sinator (3.0.1)
 
 GEM
   remote: https://rubygems.org/
@@ -30,4 +30,4 @@ DEPENDENCIES
   sinator!
 
 BUNDLED WITH
-   1.16.0
+   1.16.6

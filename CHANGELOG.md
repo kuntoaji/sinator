@@ -1,3 +1,6 @@
+3.0.1:
+  * update gems
+
 3.0.0:
   * set explicit version to all required ruby gems
   * replace sinatra-asset-pipeline with sprockets

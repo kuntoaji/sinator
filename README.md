@@ -6,6 +6,7 @@ The reasons behind this project because I want to create many small web applicat
 # Features
 * Generate Sinatra based web application without database
 * Generate Sinatra based web application with PostgreSQL database configuration and Sequel as ORM
+* Rake task for assets precompile and assets clean
 
 ### Installation
 

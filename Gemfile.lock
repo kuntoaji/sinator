@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    sinator (2.0.1)
+    sinator (3.0.0)
 
 GEM
   remote: https://rubygems.org/
@@ -26,8 +26,8 @@ PLATFORMS
 
 DEPENDENCIES
   bundler (~> 1.7)
-  sinator!
   rspec (= 3.2.0)
+  sinator!
 
 BUNDLED WITH
-   1.15.3
+   1.16.0

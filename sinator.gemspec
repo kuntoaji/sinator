@@ -1,3 +1,4 @@
+require 'date'
 require_relative 'lib/sinator/version'
 
 Gem::Specification.new do |s|

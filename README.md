@@ -1,3 +1,6 @@
+[![Maintainability](https://api.codeclimate.com/v1/badges/ae5f04c99c02d4efbadd/maintainability)](https://codeclimate.com/github/kuntoaji/sinator/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/ae5f04c99c02d4efbadd/test_coverage)](https://codeclimate.com/github/kuntoaji/sinator/test_coverage)
+
 # Background
 
 Sinator is [Sinatra](http://www.sinatrarb.com/) application boilerplate. It provides generator and contains minimum configuration to develop web application with Sinatra.

@@ -3,7 +3,7 @@
 
 # Background
 
-Sinator is [Sinatra](http://www.sinatrarb.com/) application boilerplate generator. It will generate Sinatra web application with minimum configuration.
+Sinator is [Sinatra](http://www.sinatrarb.com/) application generator. It will generate Sinatra application with minimum configuration.
 The reasons behind this project because I want to create many small web application based on sinatra with other third party ruby gems as foundation.
 
 # Features

@@ -1,47 +1,54 @@
+[![Maintainability](https://api.codeclimate.com/v1/badges/ae5f04c99c02d4efbadd/maintainability)](https://codeclimate.com/github/kuntoaji/sinator/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/ae5f04c99c02d4efbadd/test_coverage)](https://codeclimate.com/github/kuntoaji/sinator/test_coverage)
+
 # Background
 
-Melodiest is [Sinatra](http://www.sinatrarb.com/) application boilerplate. It provides generator and contains minimum configuration to develop application with Sinatra.
-The reason why I create Melodiest is because I want to create many small web application based on sinatra with other third party ruby gems as foundation.
-Originally, I wanted to name this project as Harmony or Melody, but because it was already taken I decided to name this project as Melodiest.
+Sinator is [Sinatra](http://www.sinatrarb.com/) application boilerplate generator. It will generate Sinatra web application with minimum configuration.
+The reasons behind this project because I want to create many small web application based on sinatra with other third party ruby gems as foundation.
+
+# Features
+* Generate Sinatra based web application without database
+* Generate Sinatra based web application with PostgreSQL database configuration and Sequel as ORM
+* Rake task for assets precompile and assets clean
 
 ### Installation
 
 ```ruby
-gem install melodiest
+gem install sinator
 ```
 
 with Bundler, put this code in your Gemfile:
 
 ```ruby
-gem 'melodiest'
+gem 'sinator'
 ```
 
 ### How to Use
 generate app in current directory without database
 
 ```
-melodiest -n my_app
+sinator -n my_app
 ```
 
 generate app in target directory without database
 
 ```
-melodiest -n my_app -t target/dir
+sinator -n my_app -t target/dir
 ```
 
-generate app in current directory with database. `-d` option will generate app with `Sequel` orm and PostgreSQL adapter.
+generate app in current directory with database. `-d` option will generate app with `Sequel` ORM and PostgreSQL adapter.
 
 ```
-melodiest -n my_app -d
+sinator -n my_app -d
 ```
 
 ### Example Usage
 This example assume that PostgreSQL is already running and desired database is already exist.
-For complete example see [github.com/kuntoaji/todo_melodiest](https://github.com/kuntoaji/todo_melodiest)
-  1. run `melodiest -n my_app -d`
+For complete example see [github.com/kuntoaji/todo_sinator](https://github.com/kuntoaji/todo_sinator)
+  1. run `sinator -n my_app -d`
   2. cd `my_app`
   3. run `bundle install`
-  4. create `config/database.yml` and configure your database setting
+  4. configure your database setting in `config/database.yml`
   5. create file `db/migrations/001_create_artists.rb` and put the following code:
 
   ```ruby
@@ -103,8 +110,8 @@ For complete example see [github.com/kuntoaji/todo_melodiest](https://github.com
   </form>
   ```
 
-  10. run the server `bundle exec thin start`
-  11. open url `localhost:3000/artists`
+  10. run the server `bundle exec puma`
+  11. open url `localhost:9292/artists`
 
 ### List of Ruby Gems
 
@@ -112,12 +119,12 @@ For complete example see [github.com/kuntoaji/todo_melodiest](https://github.com
   * sinatra-contrib
   * encrypted_cookie
   * `Sinatra::Reloader` in development environment only
-  * thin
+  * puma
   * `Rack::Session::EncryptedCookie`
   * `Rack::Csrf`
   * sequel
   * sequel_pg as PostgreSQL adapter
-  * sinatra-asset-pipeline
+  * sprockets
+  * sass
   * uglifier
-  * tux for console
-  * `Sinatra::Cache` in production environment only
+  * tux for console, run with `bundle exec tux`.

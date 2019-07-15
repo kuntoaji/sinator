@@ -43,13 +43,14 @@ sinator -n my_app -d
 ```
 
 ### Example Usage
-This example assume that PostgreSQL is already running and desired database is already exist.
-For complete example see [github.com/kuntoaji/todo_sinator](https://github.com/kuntoaji/todo_sinator)
+This example assume that PostgreSQL is already running.
+See [github.com/kuntoaji/todo_sinator](https://github.com/kuntoaji/todo_sinator) for Todo Application generated with Sinator.
   1. run `sinator -n my_app -d`
   2. cd `my_app`
   3. run `bundle install`
   4. configure your database setting in `config/database.yml`
-  5. create file `db/migrations/001_create_artists.rb` and put the following code:
+  5. create database with `createdb my_app_development`.
+  6. create file `db/migrations/001_create_artists.rb` and put the following code:
 
   ```ruby
   Sequel.migration do
@@ -66,15 +67,15 @@ For complete example see [github.com/kuntoaji/todo_sinator](https://github.com/k
   end
   ```
 
-  6. run `rake db:migrate`
-  7. create file `app/models/Artist.rb` and put the following code:
+  7. run `rake db:migrate`
+  8. create file `app/models/Artist.rb` and put the following code:
 
   ```ruby
   class Artist < Sequel::Model
   end
   ```
 
-  8. create file `app/routes/artists.rb` and put the following code:
+  9. create file `app/routes/artists.rb` and put the following code:
 
   ```ruby
   class MyApp
@@ -93,7 +94,7 @@ For complete example see [github.com/kuntoaji/todo_sinator](https://github.com/k
   end
   ```
 
-  9. create file `app/views/artists/index.erb` and put the following code:
+  10. create file `app/views/artists/index.erb` and put the following code:
 
   ```erb
   <h1>List of Artist</h1>
@@ -110,8 +111,8 @@ For complete example see [github.com/kuntoaji/todo_sinator](https://github.com/k
   </form>
   ```
 
-  10. run the server `bundle exec puma`
-  11. open url `localhost:9292/artists`
+  11. run the server `bundle exec puma`
+  12. open url `localhost:9292/artists`
 
 ### List of Ruby Gems
 

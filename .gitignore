@@ -3,3 +3,4 @@
 *.swo
 *.gem
 .DS_Store
+coverage

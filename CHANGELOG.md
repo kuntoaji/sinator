@@ -1,3 +1,7 @@
+3.0.4:
+  * update existing gems with non specific version
+  * add sassc gem to generated app
+
 3.0.3:
   * update gems
 

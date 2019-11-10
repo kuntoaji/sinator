@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    sinator (3.0.3)
+    sinator (3.0.4)
 
 GEM
   remote: https://rubygems.org/

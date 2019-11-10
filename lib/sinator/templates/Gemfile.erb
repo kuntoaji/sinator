@@ -1,15 +1,15 @@
 source 'https://rubygems.org'
 
-gem 'sinatra', '2.0.5'
-gem 'sinatra-contrib', '2.0.5', require: false
+gem 'sinatra', '~> 2.0'
+gem 'sinatra-contrib', '~> 2.0', require: false
 gem 'encrypted_cookie', '0.0.5'
-gem 'rack_csrf', '2.6.0', require: 'rack/csrf'
-gem 'puma', '4.0.1'
-gem 'tux', '0.3.0', require: false
-gem 'uglifier', '4.1.20', require: false
-gem 'sass', '3.7.4', require: false
-gem 'sprockets', '3.7.2'
+gem 'rack_csrf', '~> 2.6', require: 'rack/csrf'
+gem 'puma', '~> 4.3'
+gem 'tux', '~> 0.3', require: false
+gem 'uglifier', '~> 4.2', require: false
+gem 'sass', '~> 3.7', require: false
+gem 'sprockets', '~> 4.0'
 <% if @with_database -%>
-gem 'sequel', '5.22.0'
-gem 'sequel_pg', '1.12.2', require: 'sequel'
+gem 'sequel', '>= 5'
+gem 'sequel_pg', '>= 1.12', require: 'sequel'
 <% end -%>

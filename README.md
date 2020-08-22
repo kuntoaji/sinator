@@ -25,25 +25,38 @@ gem 'sinator'
 ```
 
 ### How to Use
-generate app in current directory without database
+
+Generate app in current directory without database.
 
 ```
 sinator -n my_app
 ```
 
-generate app in target directory without database
+Generate app in target directory without database.
 
 ```
 sinator -n my_app -t target/dir
 ```
 
-generate app in current directory with database. `-d` option will generate app with `Sequel` ORM and PostgreSQL adapter.
+Generate app in current directory with database. `-d` option will generate app with `Sequel` ORM and PostgreSQL adapter.
 
 ```
 sinator -n my_app -d
 ```
+Run web server on localhost.
+
+```
+bundle exec puma
+```
+
+Run application console / interactive mode / IRB.
+
+```
+bundle exec tux
+```
 
 ### Example Usage
+
 This example assume that PostgreSQL is already running.
 See [github.com/kuntoaji/todo_sinator](https://github.com/kuntoaji/todo_sinator) for Todo Application generated with Sinator.
   1. run `sinator -n my_app -d`
@@ -114,19 +127,4 @@ See [github.com/kuntoaji/todo_sinator](https://github.com/kuntoaji/todo_sinator)
 
   11. run the server `bundle exec puma`
   12. open url `localhost:9292/artists`
-
-### List of Ruby Gems
-
-  * sinatra
-  * sinatra-contrib
-  * encrypted_cookie
-  * `Sinatra::Reloader` in development environment only
-  * puma
-  * `Rack::Session::EncryptedCookie`
-  * `Rack::Csrf`
-  * sequel
-  * sequel_pg as PostgreSQL adapter
-  * sprockets
-  * sass
-  * uglifier
-  * tux for console, run with `bundle exec tux`.
+  13. Enjoy! :)

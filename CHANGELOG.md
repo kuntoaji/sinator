@@ -1,3 +1,7 @@
+3.1.0:
+  * update encrypted_cookie to version 0.1.0
+  * set stdout and stderr puma on production
+
 3.0.4:
   * update existing gems with non specific version
   * add sassc gem to generated app

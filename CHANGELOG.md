@@ -1,3 +1,6 @@
+3.1.1:
+  * Update Ruby gems
+
 3.1.0:
   * update encrypted_cookie to version 0.1.0
   * set stdout and stderr puma on production

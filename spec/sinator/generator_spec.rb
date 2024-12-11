@@ -14,13 +14,13 @@ describe Sinator::Generator do
     @dest_with_db = "#{@dest}_with_db"
     @app = "my_app"
 
-    FileUtils.rm_r @dest if Dir.exists?(@dest)
-    FileUtils.rm_r @dest_with_db if Dir.exists?(@dest_with_db)
+    FileUtils.rm_r @dest if Dir.exist?(@dest)
+    FileUtils.rm_r @dest_with_db if Dir.exist?(@dest_with_db)
   end
 
   after do
-    FileUtils.rm_r @dest if Dir.exists?(@dest)
-    FileUtils.rm_r @dest_with_db if Dir.exists?(@dest_with_db)
+    FileUtils.rm_r @dest if Dir.exist?(@dest)
+    FileUtils.rm_r @dest_with_db if Dir.exist?(@dest_with_db)
   end
 
   it "sets app_name" do
@@ -32,9 +32,9 @@ describe Sinator::Generator do
   end
 
   it "has default destination path app_name" do
-    FileUtils.rm_r @app if Dir.exists?(@app)
+    FileUtils.rm_r @app if Dir.exist?(@app)
     expect(Sinator::Generator.new(@app).destination).to eq File.expand_path(@app)
-    FileUtils.rm_r @app if Dir.exists?(@app)
+    FileUtils.rm_r @app if Dir.exist?(@app)
   end
 
   it "sets new destination path even if it's not exist yet" do
@@ -97,8 +97,8 @@ describe Sinator::Generator do
       generated_file = "#{target_dir}/app/routes/home.rb"
       expected_file = File.expand_path("../../fixtures/app_routes_home.txt", __FILE__)
 
-      expect(File.exists?(erb_file)).to be_falsey
-      expect(File.exists?(generated_file)).to be_truthy
+      expect(File.exist?(erb_file)).to be_falsey
+      expect(File.exist?(generated_file)).to be_truthy
       expect_file_eq(generated_file, expected_file)
     end
 

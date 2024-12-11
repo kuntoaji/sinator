@@ -24,7 +24,7 @@ module Sinator
 
     def generate_rakefile
       gemfile = File.read File.expand_path("../templates/Rakefile.erb", __FILE__)
-      erb = ERB.new gemfile, 0, '-'
+      erb = ERB.new gemfile, trim_mode: '-'
 
       File.open "#{@destination}/Rakefile", "w" do |f|
         f.write erb.result(binding)
@@ -33,7 +33,7 @@ module Sinator
 
     def generate_gemfile
       gemfile = File.read File.expand_path("../templates/Gemfile.erb", __FILE__)
-      erb = ERB.new gemfile, 0, '-'
+      erb = ERB.new gemfile, trim_mode: '-'
 
       File.open "#{@destination}/Gemfile", "w" do |f|
         f.write erb.result(binding)
@@ -53,12 +53,12 @@ module Sinator
       puma_development = File.read File.expand_path("../templates/config/puma/development.erb", __FILE__)
       puma_production = File.read File.expand_path("../templates/config/puma/production.erb", __FILE__)
 
-      erb = ERB.new puma_development, 0, '-'
+      erb = ERB.new puma_development, trim_mode: '-'
       File.open "#{@destination}/config/puma/development.rb", "w" do |f|
         f.write erb.result(binding)
       end
 
-      erb = ERB.new puma_production, 0, '-'
+      erb = ERB.new puma_production, trim_mode: '-'
       File.open "#{@destination}/config/puma/production.rb", "w" do |f|
         f.write erb.result(binding)
       end
@@ -68,14 +68,14 @@ module Sinator
     def generate_app
       copy_templates
       app = File.read File.expand_path("../templates/app.erb", __FILE__)
-      erb = ERB.new app, 0, '-'
+      erb = ERB.new app, trim_mode: '-'
 
       File.open "#{@destination}/#{@app_name}.rb", "w" do |f|
         f.write erb.result(binding)
       end
 
       route = File.read File.expand_path("../templates/app/routes/home.erb", __FILE__)
-      erb = ERB.new route, 0, '-'
+      erb = ERB.new route, trim_mode: '-'
 
       File.open "#{@destination}/app/routes/home.rb", "w" do |f|
         f.write erb.result(binding)

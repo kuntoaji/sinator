@@ -14,8 +14,8 @@ Gem::Specification.new do |s|
   s.homepage    = 'http://github.com/kuntoaji/sinator'
   s.license     = 'MIT'
 
-  s.required_ruby_version = '>= 2.1'
-  s.add_development_dependency 'bundler', '~> 1.7'
-  s.add_development_dependency 'rspec', '3.2.0'
+  s.required_ruby_version = '>= 3.3.1'
+  s.add_development_dependency 'bundler'
+  s.add_development_dependency 'rspec'
   s.add_development_dependency 'simplecov'
 end

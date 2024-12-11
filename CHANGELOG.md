@@ -1,3 +1,6 @@
+4.0.0:
+  * Drop support for older Ruby versions, only support Ruby 3.3.1 and newer
+
 3.1.1:
   * Update Ruby gems
 
